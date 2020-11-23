@@ -1,27 +1,35 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.7.BUILD-SNAPSHOT'
+	id 'org.springframework.boot' version '2.4.1-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 	id "com.moowork.node" version "1.3.1"
 }
-
 apply plugin: "com.moowork.node"
-group = 'academy.erp'
+group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
-apply plugin: 'io.spring.dependency-management'
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
 	maven { url 'https://repo.spring.io/snapshot' }
 }
-def webappDir = "$projectDir/frontend/front"
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'  
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
+	compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+test {
+	useJUnitPlatform()
+}
+def webappDir = "$projectDir/frontend/my-app"
 
 task appNpmInstall(type: NpmTask) {
     workingDir = file("${webappDir}")
@@ -29,27 +37,9 @@ task appNpmInstall(type: NpmTask) {
 }
 
 task copyWebApp(type: Copy) {
-    from 'frontend/front/build'
+    from 'frontend/my-app/build'
     into "build/resources/main/static"
 }
 
 copyWebApp.dependsOn(appNpmInstall)
 compileJava.dependsOn(copyWebApp)
-
-
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.session:spring-session-core'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'io.projectreactor:reactor-test'
-}
-
-test {
-	useJUnitPlatform()
-}
