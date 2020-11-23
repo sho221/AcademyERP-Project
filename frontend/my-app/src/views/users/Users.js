@@ -34,7 +34,7 @@ getApi = () => {
         <table>
         <thead>
           <tr><td>NO</td><td>NAME</td><td>ID</td><td>password</td><td>HP</td><td>ADDRESS</td>
-          <td>E-MAIL</td><td>BIRTH</td><td>SEX</td><td>RANK</td><td>SAL</td><td>DEPART</td><td>branch</td>
+          <td>E-MAIL</td><td>BIRTH</td><td>SEX</td><td>RANK</td><td>SAL</td><td>DEPART</td><td>BRANCH</td>
           <td>PROFILE</td><td>VERIFY</td><td>DATE</td></tr>
         </thead>
         <tbody>
