@@ -1,5 +1,3 @@
-server: 
-  port: 8083
 spring:
   datasource:
     url: jdbc:mariadb://computer-academy-erp.cxdjlccswbih.ap-northeast-2.rds.amazonaws.com:3306/computer_academy_erp
