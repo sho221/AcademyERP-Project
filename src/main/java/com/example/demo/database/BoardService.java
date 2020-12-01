@@ -19,7 +19,9 @@ public class BoardService {
 	@Autowired
 	private BoardRepository boardRepository;
 	
-	 
+	@Autowired
+	private LectureRepository lectureRepository;
+	
 
 	@GetMapping("/users")
     public HashMap<String,List> hello() {
@@ -37,7 +39,24 @@ public class BoardService {
         result.put("message", list);
 
         return result;
-    }
+	}
+	
+	@GetMapping("/lectures")
+    public HashMap<String,List> lectures() {
+		HashMap<String,List> result = new HashMap<>();
+		List<LectureEntity> list = lectureRepository.findAll();
+        result.put("message", list);
 
+        return result;
+	}
+	
+	@GetMapping("/lecture")
+    public HashMap<String,Optional> lecture(@RequestParam("id") Long id) {
+		HashMap<String,Optional> result = new HashMap<>();
+		Optional<LectureEntity> list = lectureRepository.findById(id);
+        result.put("message", list);
+
+        return result;
+	}
 
 }
