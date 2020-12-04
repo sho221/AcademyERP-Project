@@ -1,10 +1,10 @@
-package com.example.demo.database;
+package com.example.demo.database.jpa;
 
 import java.io.Serializable;
 
 import javax.persistence.*;
 import lombok.*;
-
+ 
 
 
     @Entity

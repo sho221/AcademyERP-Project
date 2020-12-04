@@ -1,20 +1,24 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-
+var a=window.sessionStorage.getItem('id');
 export default [
   {
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    }
+    // badge: {               //new
+    //   color: 'info',
+    //   text: 'NEW',
+    // }
   },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['Theme']
+    _children: ['로그인된아이디:'+a]
+  },
+  {
+    _tag: 'CSidebarNavTitle',
+    _children: ['1번']
   },
   {
     _tag: 'CSidebarNavItem',
@@ -30,7 +34,7 @@ export default [
   },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['Components']
+    _children: ['2번']
   },
   {
     _tag: 'CSidebarNavDropdown',

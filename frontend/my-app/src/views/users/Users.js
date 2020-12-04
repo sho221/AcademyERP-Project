@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
-import './table.css';
+import '../css/table.css';
+
 
 class Users extends Component {
   constructor(props) {
@@ -9,58 +10,56 @@ class Users extends Component {
     this.state = {
         ItemList: ""
     }
-}
+  }
 
-componentDidMount() {
-    this.getApi();
-}
+  componentDidMount() {
+      this.getApi();
+  }
 
-getApi = () => {
-    axios.get("http://localhost:8080/api/users")
-        .then(res => {
-            console.log(res);
-            this.setState({
-              ItemList: res.data.message
-            })
-        })
-        .catch(res => console.log(res))
-}
+  getApi = () => {
+      axios.get("http://localhost:8083/api/users")
+          .then(res => {
+              console.log(res);
+              this.setState({
+                ItemList: res.data.message
+              })
+          })
+          .catch(res => console.log(res))
+  }
 
-  render() {
-    const { ItemList } = this.state;
-    console.log(ItemList);
-    return (
+
+    render() {
+      const { ItemList } = this.state;
+      console.log(ItemList);
+      return (
       <div>
-        <table>
+        <table  class="a">
         <thead>
-          <tr><td>NO</td><td>NAME</td><td>ID</td><td>password</td><td>HP</td><td>ADDRESS</td>
-          <td>E-MAIL</td><td>BIRTH</td><td>SEX</td><td>RANK</td><td>SAL</td><td>DEPART</td><td>BRANCH</td>
-          <td>PROFILE</td><td>VERIFY</td><td>DATE</td></tr>
+          <tr  class="a"><td class="a">NO</td><td  class="a">NAME</td><td  class="a">ID</td><td  class="a">password</td><td  class="a">HP</td><td  class="a">ADDRESS</td>
+          <td  class="a">E-MAIL</td><td  class="a">BIRTH</td><td  class="a">SEX</td><td  class="a">RANK</td><td  class="a">SAL</td><td  class="a">DEPART</td><td  class="a">BRANCH</td>
+          <td class="a">PROFILE</td><td class="a">VERIFY</td><td class="a">DATE</td></tr>
         </thead>
         <tbody>
          {ItemList&&ItemList.map((itemdata, insertIndex) => {
             return (
-            <tr key={insertIndex}>
-                <td>{itemdata.no}</td>
-                <td>
-              
-                  <Link to={`/users/${itemdata.no}?id=${itemdata.no}`}>{itemdata.name}</Link> 
-               
-                </td>
-                <td>{itemdata.id}</td>
-                <td>{itemdata.password}</td>
-                <td>{itemdata.hp}</td>
-                <td>{itemdata.address}</td>
-                <td>{itemdata.email}</td>
-                <td>{itemdata.birth}</td>
-                <td>{itemdata.sex}</td>
-                <td>{itemdata.rank}</td>
-                <td>{itemdata.salary}</td>
-                <td>{itemdata.department}</td>
-                <td>{itemdata.branch}</td>
-                <td>{itemdata.profile_name}</td>
-                <td>{itemdata.verify}</td>
-                <td>{itemdata.regidate}</td>
+            <tr key={insertIndex} class="a">
+                <td class="a">{itemdata.no}</td>
+                <td class="a"><Link to={`/users/${itemdata.no}`}>{itemdata.name}</Link></td>
+                <td class="a">{itemdata.id}</td>
+                <td class="a">{itemdata.password}</td>
+                <td class="a">{itemdata.hp}</td>
+                <td class="a">{itemdata.address}</td>
+                <td class="a">{itemdata.email}</td>
+                <td class="a">{itemdata.birth}</td>
+                <td class="a">{itemdata.sex}</td>
+                <td class="a">{itemdata.rank}</td>
+                <td class="a">{itemdata.salary}</td>
+                <td class="a">{itemdata.department}</td>
+                <td class="a">{itemdata.branch}</td>
+                <td class="a">{itemdata.profile_name}</td>
+                <td class="a">{itemdata.verify}</td>
+                <td class="a">{itemdata.regidate}</td>
+                <td><Link to={`/logintest/${itemdata.no}/${itemdata.name}`}>로그인</Link></td>
               </tr>
             );
           })}
