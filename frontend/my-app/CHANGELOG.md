@@ -32,7 +32,7 @@ All notable changes to this project will be documented in this file. Dates are d
 - refactor: update icons to version 2, rtl fixes [`8e4fbc2`](https://github.com/coreui/coreui-free-react-admin-template/commit/8e4fbc2aa8786b00a004282260c52986e1cd2430)
 - fix: delete unneded icons, aside, fix readme.md [`1ee0561`](https://github.com/coreui/coreui-free-react-admin-template/commit/1ee05619ba15d050b73df21c8d1347e8329942d5)
 - chore: 3.0.0 version release - update dependencies [`fd5236d`](https://github.com/coreui/coreui-free-react-admin-template/commit/fd5236d47340b336bf641041cbf6d48ec8b1081a)
-- feat: add query parameters to Users view [`98f8b67`](https://github.com/coreui/coreui-free-react-admin-template/commit/98f8b677edb96f9175b7d4c20370c3d6744543bd)
+- feat: add query parameters to AllEmployeeInfo view [`98f8b67`](https://github.com/coreui/coreui-free-react-admin-template/commit/98f8b677edb96f9175b7d4c20370c3d6744543bd)
 - docs: add license [`db85786`](https://github.com/coreui/coreui-free-react-admin-template/commit/db85786be465fdb7a84b7337dbe876afc5e957bc)
 - chore: update react.md [`5aa0cc3`](https://github.com/coreui/coreui-free-react-admin-template/commit/5aa0cc3ce15c841032cd75392418cfeb2e4d094f)
 - docs: README cleanup [`82a4351`](https://github.com/coreui/coreui-free-react-admin-template/commit/82a4351daa6c8d452e19c7141dbadecc3f721c1b)

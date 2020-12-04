@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 import './table.css';
 
-class Users extends Component {
+class AllEmployeeInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -16,7 +16,7 @@ componentDidMount() {
 }
 
 getApi = () => {
-    axios.get("http://localhost:8080/api/users")
+    axios.get("http://localhost:8080/eployee/allEployeeInfo")
         .then(res => {
             console.log(res);
             this.setState({
@@ -43,9 +43,9 @@ getApi = () => {
             <tr key={insertIndex}>
                 <td>{itemdata.no}</td>
                 <td>
-              
-                  <Link to={`/users/${itemdata.no}?id=${itemdata.no}`}>{itemdata.name}</Link> 
-               
+
+                  <Link to={`/employee/${itemdata.no}?id=${itemdata.no}`}>{itemdata.name}</Link>
+
                 </td>
                 <td>{itemdata.id}</td>
                 <td>{itemdata.password}</td>
@@ -64,11 +64,11 @@ getApi = () => {
               </tr>
             );
           })}
-        </tbody> 
+        </tbody>
       </table>
       </div>
     );
   }
 }
 
-export default Users;
+export default AllEmployeeInfo;

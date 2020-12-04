@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-  
+
 import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
 
 
@@ -19,7 +19,7 @@ componentDidMount() {
 getApi = () => {
   const { params } = this.props.match;
   console.log(params.key1);
-    axios.get("http://localhost:8080/api/user?id="+params.id)
+    axios.get("http://localhost:8080/eployee/eployeeById/id="+params.id)
         .then(res => {
             console.log(res);
             this.setState({
@@ -36,7 +36,7 @@ goBack = () => {
   render() {
     const tempStyle={float:"left"}
     const tempStyle2={float:"right"}
-    
+
     const { ItemList } = this.state;
     console.log(ItemList);
     return (
@@ -49,8 +49,8 @@ goBack = () => {
           </div>
           <div style={tempStyle2}>
             <button onClick={this.goBack}>뒤로가기</button>
-          </div>  
-           
+          </div>
+
           </CCardHeader>
           <CCardBody>
               <table className="table table-striped table-hover">
