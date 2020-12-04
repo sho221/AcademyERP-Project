@@ -1,7 +1,6 @@
 package com.example.demo.database;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
 import lombok.*;
 
