@@ -8,7 +8,6 @@ const Cards = React.lazy(() => import('./views/base/cards/Cards'));
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'));
 const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'));
 const BasicForms = React.lazy(() => import('./views/base/forms/BasicForms'));
-
 const Jumbotrons = React.lazy(() => import('./views/base/jumbotrons/Jumbotrons'));
 const ListGroups = React.lazy(() => import('./views/base/list-groups/ListGroups'));
 const Navbars = React.lazy(() => import('./views/base/navbars/Navbars'));
@@ -37,8 +36,11 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
+
 const Lectures = React.lazy(() => import('./views/lecture/Lectures'));
 const Lecture = React.lazy(() => import('./views/lecture/Lecture'));
+const LectureAdd = React.lazy(() => import('./views/lecture/LectureAdd'));
+const LectureDelete = React.lazy(() => import('./views/lecture/LectureDelete'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -81,8 +83,11 @@ const routes = [
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
+
   { path: '/lecture', exact: true,  name: 'Lectures', component: Lectures },
-  { path: '/users/:no', exact: true, name: 'Lecture Details', component: Lecture }
+  { path: '/lecture/:id', exact: true, name: 'Lecture Details', component: Lecture },
+  { path: '/lectureAdd', exact: true, name: 'Lecture Add', component: LectureAdd },
+  { path: '/lectureDelete/:id', exact: true, name: 'Lecture Delete', component: LectureDelete }
 ];
 
 export default routes;

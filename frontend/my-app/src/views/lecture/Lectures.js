@@ -16,7 +16,7 @@ componentDidMount() {
 }
 
 getApi = () => {
-    axios.get("http://localhost:8080/api/lectures")
+    axios.get("http://localhost:8080/api2/lecture")
         .then(res => {
             console.log(res);
             this.setState({
@@ -28,9 +28,16 @@ getApi = () => {
 
   render() {
     const { ItemList } = this.state;
+
     console.log(ItemList);
     return (
       <div>
+        <header>
+          <button>
+            <Link to={`/lectureAdd`}>추가하기</Link>
+          </button>
+          <br></br>
+        </header>
         <table>
         <thead>
           <tr><td>NO</td><td>NAME</td><td>Teacher</td><td>PRICE</td><td>Students</td><td>ROOM</td>
@@ -43,9 +50,9 @@ getApi = () => {
             <tr key={insertIndex}>
                 <td>{itemdata.no}</td>
                 <td>
-              
-                  <Link to={`/users/${itemdata.no}?id=${itemdata.no}`}>{itemdata.name}</Link> 
-               
+
+                  <Link to={`/lecture/${itemdata.no}?id=${itemdata.no}`}>{itemdata.name}</Link>
+
                 </td>
                 <td>{itemdata.teacher}</td>
                 <td>{itemdata.price}</td>
@@ -61,7 +68,7 @@ getApi = () => {
               </tr>
             );
           })}
-        </tbody> 
+        </tbody>
       </table>
       </div>
     );
