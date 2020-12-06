@@ -5,7 +5,7 @@ var a=window.sessionStorage.getItem('no');
 
 class AttInOut extends Component {
   in = () =>{
-    axios.get(`http://localhost:8083/api2/in?no=${a}`)
+    axios.post(`http://localhost:8083/api2/in`,{no: a})
     .then(res => {
       if(res.data){
         alert("출근되었습니다.");
@@ -16,6 +16,7 @@ class AttInOut extends Component {
     })
     .catch(res => console.log(res)) 
   }
+  
 
   out = () =>{
     axios.get(`http://localhost:8083/api2/out?no=${a}`)

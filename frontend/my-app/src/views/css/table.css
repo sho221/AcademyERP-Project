@@ -2,12 +2,12 @@
   border:1px solid #444444;
 } */
 
-  table.a {
+  table.default {
     width: 100%;
     border-top: 1px solid #444444;
     border-collapse: collapse;
   }
-  th.a, td.a {
+  th.default, td.default {
     border-bottom: 1px solid #444444;
   }
   .b {

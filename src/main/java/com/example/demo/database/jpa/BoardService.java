@@ -34,8 +34,7 @@ public class BoardService {
 				}
 			}
 		}
-        result.put("message", list);
-
+        result.put("list", list);
         return result;
 	}
 
@@ -51,7 +50,7 @@ public class BoardService {
     public Map<String,Optional<BoardEntity>> user(@RequestParam("id") Long id) {
 		HashMap<String,Optional<BoardEntity>> result = new HashMap<>();
 		Optional<BoardEntity> list = boardRepository.findById(id); 
-        result.put("message", list);
+        result.put("list", list);
 
         return result;
     }

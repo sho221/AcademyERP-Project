@@ -21,7 +21,7 @@ class Users extends Component {
           .then(res => {
               console.log(res);
               this.setState({
-                ItemList: res.data.message
+                userList: res.data.list
               })
           })
           .catch(res => console.log(res))
@@ -29,8 +29,7 @@ class Users extends Component {
 
 
     render() {
-      const { ItemList } = this.state;
-      console.log(ItemList);
+      const { userList } = this.state;
       return (
       <div>
         <table  class="a">
@@ -40,26 +39,26 @@ class Users extends Component {
           <td class="a">PROFILE</td><td class="a">VERIFY</td><td class="a">DATE</td></tr>
         </thead>
         <tbody>
-         {ItemList&&ItemList.map((itemdata, insertIndex) => {
+         {userList&&userList.map((items) => {
             return (
-            <tr key={insertIndex} class="a">
-                <td class="a">{itemdata.no}</td>
-                <td class="a"><Link to={`/users/${itemdata.no}`}>{itemdata.name}</Link></td>
-                <td class="a">{itemdata.id}</td>
-                <td class="a">{itemdata.password}</td>
-                <td class="a">{itemdata.hp}</td>
-                <td class="a">{itemdata.address}</td>
-                <td class="a">{itemdata.email}</td>
-                <td class="a">{itemdata.birth}</td>
-                <td class="a">{itemdata.sex}</td>
-                <td class="a">{itemdata.rank}</td>
-                <td class="a">{itemdata.salary}</td>
-                <td class="a">{itemdata.department}</td>
-                <td class="a">{itemdata.branch}</td>
-                <td class="a">{itemdata.profile_name}</td>
-                <td class="a">{itemdata.verify}</td>
-                <td class="a">{itemdata.regidate}</td>
-                <td><Link to={`/logintest/${itemdata.no}/${itemdata.name}`}>로그인</Link></td>
+            <tr class="a">
+                <td class="a">{items.no}</td>
+                <td class="a"><Link to={`/users/${items.no}`}>{items.name}</Link></td>
+                <td class="a">{items.id}</td>
+                <td class="a">{items.password}</td>
+                <td class="a">{items.hp}</td>
+                <td class="a">{items.address}</td>
+                <td class="a">{items.email}</td>
+                <td class="a">{items.birth}</td>
+                <td class="a">{items.sex}</td>
+                <td class="a">{items.rank}</td>
+                <td class="a">{items.salary}</td>
+                <td class="a">{items.department}</td>
+                <td class="a">{items.branch}</td>
+                <td class="a">{items.profile_name}</td>
+                <td class="a">{items.verify}</td>
+                <td class="a">{items.regidate}</td>
+                <td><Link to={`/logintest/${items.no}/${items.name}`}>로그인</Link></td>
               </tr>
             );
           })}
