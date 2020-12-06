@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import AttTable from "./AttTable";
 import '../css/table.css';
-import jQuery from "jquery";
 import Down from '../../suminCP/excel';
-window.$ = window.jQuery = jQuery;
+
 
 
 class Users extends Component {

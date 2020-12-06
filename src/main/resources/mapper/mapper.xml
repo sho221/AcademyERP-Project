@@ -3,19 +3,19 @@
 
 <mapper namespace="com.example.demo.database.mybatis.DBInterface">
     <select id="att" resultType="DTO">
-        SELECT a.`no`,employee_no,DAY,department,NAME,rank,start_time,end_time,night FROM attendance a inner join employee b ON  a.employee_no=b.`no` ORDER BY no ASC
+        SELECT a.`no`,a.employee_no,a.DAY,department,NAME,rank,a.start_time,a.end_time,a.night FROM attendance a inner join employee b ON  a.employee_no=b.`no` ORDER BY no ASC
     </select>
 
     <select id="attfind" resultType="DTO">
-        SELECT a.`no`,employee_no,DAY,department,NAME,rank,start_time,end_time,night FROM attendance a inner join employee b ON  a.employee_no=b.`no` where date(day) = date(#{day}) and name like CONCAT('%',#{name},'%') and department like CONCAT('%',#{dep},'%') ORDER BY no ASC
+        SELECT a.`no`,a.employee_no,a.DAY,department,NAME,rank,a.start_time,a.end_time,a.night FROM attendance a inner join employee b ON  a.employee_no=b.`no` where date(a.day) = date(#{day}) and name like CONCAT('%',#{name},'%') and department like CONCAT('%',#{dep},'%') ORDER BY no ASC
     </select>
 
     <select id="attfind2" resultType="DTO">
-        SELECT a.`no`,employee_no,DAY,department,NAME,rank,start_time,end_time,night FROM attendance a inner join employee b ON  a.employee_no=b.`no` where name like CONCAT('%',#{name},'%') and department like CONCAT('%',#{dep},'%') ORDER BY no ASC
-    </select>
+        SELECT a.`no`,a.employee_no,a.DAY,department,NAME,rank,a.start_time,a.end_time,a.night FROM attendance a inner join employee b ON  a.employee_no=b.`no` where name like CONCAT('%',#{name},'%') and department like CONCAT('%',#{dep},'%') ORDER BY no ASC
+    </select> 
 
     <select id="attfind3" resultType="DTO">
-        SELECT a.`no`,employee_no,DAY,department,NAME,rank,start_time,end_time,night FROM attendance a inner join employee b ON  a.employee_no=b.`no` where name like CONCAT('%',#{name},'%') and department like CONCAT('%',#{dep},'%') and day BETWEEN #{start} AND #{end} ORDER BY name ASC, day
+        SELECT a.`no`,a.employee_no,a.DAY,department,NAME,rank,a.start_time,a.end_time,a.night FROM attendance a inner join employee b ON  a.employee_no=b.`no` where name like CONCAT('%',#{name},'%') and department like CONCAT('%',#{dep},'%') and a.day BETWEEN #{start} AND #{end} ORDER BY name ASC, day
     </select> 
 
     <insert id="intest" parameterType="int">

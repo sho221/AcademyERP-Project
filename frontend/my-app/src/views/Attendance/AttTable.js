@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
 import '../css/table.css';
-import jQuery from "jquery";
+
 import Moment from "moment"
-window.$ = window.jQuery = jQuery;
+
 
 const _numbers=[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const _color=["#F5A9BC","#58FAF4","#F3F781","#00FFBF","#82FA58"];
-const _week=[0,1,2,3,4,5,6];
+const _week=[1,2,3,4,5,6,0];
 
 var cot=-1;
 class AttTable extends Component {
