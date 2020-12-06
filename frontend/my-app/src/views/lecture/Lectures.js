@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import './table.css';
+import LectureAdd from "./LectureAdd";
+import LectureDelete from "./LectureDelete";
 
 class Lectures extends Component {
   constructor(props) {
@@ -9,7 +11,16 @@ class Lectures extends Component {
     this.state = {
         ItemList: ""
     }
+    this.stateRefresh = this.stateRefresh.bind(this);
 }
+
+  stateRefresh() {
+    this.setState({
+      ItemList: "",
+    });
+    this.getApi();
+
+  }
 
 componentDidMount() {
     this.getApi();
@@ -33,9 +44,7 @@ getApi = () => {
     return (
       <div>
         <header>
-          <button>
-            <Link to={`/lectureAdd`}>추가하기</Link>
-          </button>
+          <LectureAdd stateRefresh={this.stateRefresh}/>
           <br></br>
         </header>
         <table>

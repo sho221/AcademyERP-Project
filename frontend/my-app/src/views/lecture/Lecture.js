@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-
-import { CCard, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
+import {CCard, CCardBody, CCardHeader, CCol, CRow} from '@coreui/react'
 import LectureDelete from "./LectureDelete";
+import Button from "@material-ui/core/Button";
 
 
 class Lectures extends Component {
@@ -19,7 +19,6 @@ componentDidMount() {
 
 getApi = () => {
   const { params } = this.props.match;
-  console.log(params.key1);
     axios.get("http://localhost:8080/api2/lecture/"+params.id)
         .then(res => {
             console.log(res);
@@ -46,14 +45,17 @@ goBack = () => {
         <CCard>
           <CCardHeader>
           <div style={tempStyle}>
-            <h3>User name: {ItemList.name}</h3>
+            <h3>User name: {ItemList.name}&emsp;&emsp;&emsp;</h3>
           </div>
+            <br/>
           <div style={tempStyle2}>
-            <button onClick={this.goBack}>뒤로가기</button>
+            <Button Button variant="contained" onClick={this.goBack}>뒤로가기</Button>
           </div>
-           {/* <div style={tempStyle2}>
-              <LectureDelete id={this.props.id}/>
-            </div>*/}
+            <div style={tempStyle2}>
+              <LectureDelete id={ItemList.no}/>
+            </div>
+
+
           </CCardHeader>
           <CCardBody>
               <table className="table table-striped table-hover">

@@ -1,45 +1,84 @@
 import React from "react";
-import axios from "axios";
-
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
+import { withRouter } from 'react-router-dom';
 
 class LectureDelete extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
 
-  deleteCustomer(id){
-    axios({
-      url: 'http://localhost:8080/api2/lecture',
-      method: "POST",
-      headers: {'content-type': 'application/json'},
-      data: {
-        name: this.state.name,
-        teacher: this.state.teacher,
-        price: this.state.price,
-        students: this.state.students,
-        room: this.state.room,
-        start_date: this.state.start_date,
-        end_date: this.state.end_date,
-        day: this.state.day,
-        start_time: this.state.start_time,
-        end_time: this.state.end_time,
-        part: this.state.part,
-        branch: this.state.branch
-      }
-    })
-    alert("삭제되었습니다.");
-    this.props.history.push('/lecture')
+    }
+
+    this.handleClickOpen = this.handleClickOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this);
+
   }
+
+  handleClickOpen() {
+    this.setState({
+      open: true
+    });
+
+  }
+
+  handleClose() {
+    this.setState({
+      open: false
+    })
+
+  }
+
+
+  deleteCustomer(id) {
+    const url = 'http://localhost:8080/api2/lecture/' + id;
+    fetch(url, {
+      method: 'DELETE'
+    });
+    alert("삭제 되었습니다.");
+    this.props.history.push("/lecture");
+  }
+
 
   render() {
     return (
-      <br>
-      <form id="delete-form" method="post">
-        <input type="hidden" name="_method" value="delete"/>
-        <button id="delete-btn">삭제</button>
-      </form>
-      <button onClick={(e) => {this.deleteCustomer(this.props.id)}}>삭제</button>
-      </br>
+      <div>
+        <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
+          삭제
+        </Button>
+
+        <Dialog onClose={this.handleClose} open={this.state.open}>
+          <DialogTitle onClose={this.handleClose}>
+            삭제 경고
+          </DialogTitle>
+
+          <DialogContent>
+            <Typography gutterBottom>
+              선택한 고객 정보가 삭제됩니다.
+            </Typography>
+          </DialogContent>
+
+          <DialogActions>
+            <Button variant="contained" color="primary" onClick={(e) => {
+              this.deleteCustomer(this.props.id)
+            }}>삭제</Button>
+            <Button variant="outlined" color="primary" onClick={this.handleClose}>닫기</Button>
+          </DialogActions>
+
+        </Dialog>
+
+      </div>
+
     )
+
   }
+
 }
 
-export default LectureDelete;
+export default withRouter(LectureDelete)
 
