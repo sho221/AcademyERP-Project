@@ -240,7 +240,7 @@ class AttTable extends Component {
     var Tname='';
     var tempString='';
     var depname='';
-    if(this.props.mode===_default){
+    if(this.props.mode===_weekly){
       if(ItemList.length>1){
         var num=ItemList[1].employee_no;
         for(var i=0;i<ItemList.length;i++){
@@ -272,7 +272,7 @@ class AttTable extends Component {
     }
     return (
       <div>
-        {this.props.mode===0 &&
+        {this.props.mode===_default &&
           <div>
             <input 
               type='date'

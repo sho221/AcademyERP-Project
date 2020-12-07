@@ -9,7 +9,11 @@ class AttUpdate extends Component{
   constructor(props) {
     super(props)
     this.state = {
-      attList: ""
+      attList: "",
+      day: "",
+      start_time: "",
+      end_time: "",
+      night: ""
     }
   }
   componentDidMount(){
@@ -63,10 +67,49 @@ class AttUpdate extends Component{
 
 
   reset(){
+    const { attList } = this.state;
+    const yyyy=moment(attList.day).format("YYYY");
+    const mm=moment(attList.day).format("MM");
+    const dd=moment(attList.day).format("DD");
+    const S_hh=moment("2020-11-11 "+attList.start_time).format("HH");
+    const S_mi=moment("2020-11-11 "+attList.start_time).format("mm");
+    const S_ss=moment("2020-11-11 "+attList.start_time).format("ss");
+    const E_hh=moment("2020-11-11 "+attList.end_time).format("HH");
+    const E_mi=moment("2020-11-11 "+attList.end_time).format("mm");
+    const E_ss=moment("2020-11-11 "+attList.end_time).format("ss");
+   
+    var list=[yyyy,mm,Number(dd),S_hh,S_mi,S_ss,E_hh,E_mi,E_ss,attList.night]
     var tag = document.getElementsByClassName("re");
     for(var i=0;i<tag.length;i++){
-      tag[i].value=""
+      console.log(list[i])
+      console.log(tag[i].value)
+      tag[i].value=list[i]
     }
+  }
+
+  handleSubmit(e){
+    var data = new FormData();
+    for(var i=0;i<e.length;i++){
+      data.append([e[i].name], e[i].value);
+    }
+    axios({
+      method: 'post',
+      url: 'http://localhost:8083/AttUpdate',
+      data: data,
+      headers: {'Content-Type': 'multipart/form-data' }
+      }).then(res => {
+      if(res.data){
+        alert("수정");
+        this.props.history.push("/Attendance");
+      }else{
+        alert("이미 출근되었습니다.");
+      }
+    })
+    .catch(res => console.log(res)) 
+  }
+
+  submit(){
+    document.getElementById("form").submit();
   }
 
   render(){
@@ -95,12 +138,15 @@ class AttUpdate extends Component{
           <small> employee : {attList.employee_no}</small>
         </CCardHeader>
         <CCardBody>
-          <CForm action="asd" method="post" className="form-horizontal">
+          <CForm className="form-horizontal" id="form" onSubmit={
+            event  => {
+              this.handleSubmit(event.target);
+            }}>
             <CRow>
               <CCol xs="4">
                 <CFormGroup>
                   <CLabel htmlFor="ccyear">Year</CLabel>
-                  <CSelect custom name="ccyear" id="ccyear">
+                  <CSelect custom name="year" id="ccyear" className="re">
                     {years.map((yeardata)=>{
                       if(yeardata===Number(yyyy)){return( <option selected="selected" value={yeardata}>{yeardata}</option> )}
                       else{return( <option value={yeardata}>{yeardata}</option> )}
@@ -111,7 +157,7 @@ class AttUpdate extends Component{
               <CCol xs="4">
                 <CFormGroup>
                   <CLabel htmlFor="ccmonth">Month</CLabel>
-                  <CSelect custom name="ccmonth" id="ccmonth">
+                  <CSelect custom name="month" id="ccmonth" className="re">
                     {months.map((monthdata)=>{
                       if(monthdata===Number(mm)){return( <option selected="selected" value={monthdata}>{monthdata}</option> );}
                       else{return( <option value={monthdata}>{monthdata}</option> );}
@@ -122,7 +168,7 @@ class AttUpdate extends Component{
               <CCol xs="4">
                 <CFormGroup>
                   <CLabel htmlFor="ccmonth">Day</CLabel>
-                  <CSelect custom name="ccmonth" id="ccmonth">
+                  <CSelect custom name="day" id="ccmonth" className="re">
                     {days.map((daydata)=>{
                       if(daydata===Number(dd)) return(<option selected="selected" value={daydata}>{daydata}</option>);
                       else return(<option value={daydata}>{daydata}</option>)
@@ -136,7 +182,7 @@ class AttUpdate extends Component{
                 <CLabel htmlFor="hf-email">START</CLabel>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CSelect custom name="SH" id="ccmonth" className="re">
                   {times.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(S_hh))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -144,7 +190,7 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CSelect custom name="SM" id="ccmonth" className="re">
                   {mins.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(S_mi))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -152,7 +198,7 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CSelect custom name="SS" id="ccmonth" className="re">
                   {secs.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(S_ss))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -164,7 +210,7 @@ class AttUpdate extends Component{
                 <CLabel htmlFor="hf-email">END</CLabel>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CSelect custom name="EH" id="ccmonth" className="re">
                   {times.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(E_hh))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -172,7 +218,7 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CSelect custom name="EM" id="ccmonth" className="re">
                   {mins.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(E_mi))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -180,7 +226,7 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CSelect custom name="ES" id="ccmonth" className="re">
                   {secs.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(E_ss))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -192,7 +238,7 @@ class AttUpdate extends Component{
                 <CLabel htmlFor="hf-email">NIGHT</CLabel>
               </CCol>
               <CCol xs="12" md="9">
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CSelect custom name="night" id="ccmonth" className="re"> 
                   {OX.map((ox) => {
                     var temp="O"
                     if(ox===0) temp="X";
@@ -202,11 +248,11 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
             </CFormGroup>
+            <CCardFooter>
+          <CButton type="submit" size="sm" color="primary" ><CIcon name="cil-scrubber" /> Submit</CButton> <CButton size="sm" color="danger" onClick={()=>{this.reset()}}><CIcon name="cil-ban" /> Reset</CButton>
+        </CCardFooter>
           </CForm>
         </CCardBody>
-        <CCardFooter>
-          <CButton type="submit" size="sm" color="primary"><CIcon name="cil-scrubber" /> Submit</CButton> <CButton type="reset" size="sm" color="danger" onClick={()=>{this.reset()}}><CIcon name="cil-ban" /> Reset</CButton>
-        </CCardFooter>
       </CCard>       
     )
   }

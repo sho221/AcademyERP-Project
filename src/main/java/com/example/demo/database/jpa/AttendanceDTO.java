@@ -7,11 +7,12 @@ import lombok.*;
  
 
 
-@Entity
+
 @Table(name = "attendance")
-@Getter
-@Setter
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class AttendanceDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
