@@ -8,7 +8,8 @@ class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
-        ItemList: ""
+        userList: "",
+        depList: ""
     }
   }
 
@@ -17,19 +18,24 @@ class Users extends Component {
   }
 
   getApi = () => {
-      axios.get("http://localhost:8083/api/users")
-          .then(res => {
-              console.log(res);
-              this.setState({
-                userList: res.data.list
-              })
-          })
-          .catch(res => console.log(res))
+      axios.get("http://localhost:8083/api/users").then(res => {
+        console.log(res);
+        this.setState({
+          userList: res.data.list
+        })
+      }).catch(res => console.log(res))
+      axios.get("http://localhost:8083/api/depart").then(res => {
+        console.log(res);
+        this.setState({
+          depList: res.data.depart
+        })
+      }).catch(res => console.log(res))
   }
 
 
     render() {
       const { userList } = this.state;
+      const { depList } = this.state;
       return (
       <div>
         <table  class="a">
@@ -53,12 +59,18 @@ class Users extends Component {
                 <td class="a">{items.sex}</td>
                 <td class="a">{items.rank}</td>
                 <td class="a">{items.salary}</td>
-                <td class="a">{items.department}</td>
+                {depList&&depList.map((dep)=>{
+                  if(dep.no===Number(items.department)){
+                    return(<td class="a">{dep.name}</td>);
+                  }else{
+                    return("");
+                  }
+                })}
                 <td class="a">{items.branch}</td>
                 <td class="a">{items.profile_name}</td>
                 <td class="a">{items.verify}</td>
                 <td class="a">{items.regidate}</td>
-                <td><Link to={`/logintest/${items.no}/${items.name}`}>로그인</Link></td>
+                <td><Link to={`/logintest/${items.no}/${items.name}/${items.department}`}>로그인</Link></td>
               </tr>
             );
           })}

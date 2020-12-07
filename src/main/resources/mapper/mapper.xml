@@ -19,7 +19,7 @@
     </select> 
 
     <insert id="intest" parameterType="int">
-        insert into attendance values (null,#{no},SYSDATE(),SYSDATE(),null,null)
+        insert into attendance values (null,#{no},SYSDATE(),SYSDATE(),null,0)
     </insert>
 
     <select id="datecheck" resultType="DTO" parameterType="java.util.HashMap"> 

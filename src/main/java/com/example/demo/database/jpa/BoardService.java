@@ -20,20 +20,11 @@ public class BoardService {
 
 	@Autowired
 	private departmentInter department;
-	 //select * from employee
 
 	@GetMapping("/users")
     public Map<String,List<BoardEntity>> hello() {
 		HashMap<String,List<BoardEntity>> result = new HashMap<>();
 		List<BoardEntity> list = boardRepository.findAll();
-		List<departmentDTO> dep = department.findAll();
-		for(BoardEntity board : list){
-			for(departmentDTO depart : dep){
-				if(board.getDepartment().equals(String.valueOf(depart.getNo()))){
-					board.setDepartment(depart.getName());
-				}
-			}
-		}
         result.put("list", list);
         return result;
 	}

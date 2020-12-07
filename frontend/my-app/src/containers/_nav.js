@@ -1,6 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 var a=window.sessionStorage.getItem('id');
+var dep=window.sessionStorage.getItem('dep');
 export default [
   {
     _tag: 'CSidebarNavItem',
@@ -14,7 +15,7 @@ export default [
   },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['로그인된아이디:'+a]
+    _children: ['로그인된아이디:'+a+'//dep:'+dep]
   },
   {
     _tag: 'CSidebarNavTitle',

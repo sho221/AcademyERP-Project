@@ -16,6 +16,7 @@ log = () =>{
   const { params } = this.props.match;
   window.sessionStorage.setItem('id',params.name);
   window.sessionStorage.setItem('no',params.no);
+  window.sessionStorage.setItem('dep',params.dep);
   this.setState ({asd: params.no})
   
 }

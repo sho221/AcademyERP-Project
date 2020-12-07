@@ -1,13 +1,20 @@
 import React, { Component } from "react";
 import axios from "axios";
 import '../css/table.css';
-
+import { Link } from 'react-router-dom';
 import Moment from "moment"
 
 
 const _numbers=[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const _color=["#F5A9BC","#58FAF4","#F3F781","#00FFBF","#82FA58"];
 const _week=[1,2,3,4,5,6,0];
+const _default=0,_weekly=1,_monthly=2;
+const _HRD=1;
+let HRD_login=false;
+var session_dep=window.sessionStorage.getItem('dep');
+if(Number(session_dep)===_HRD){
+  HRD_login=true;
+}
 
 var cot=-1;
 class AttTable extends Component {
@@ -71,8 +78,8 @@ class AttTable extends Component {
     }
     return arr;
   }
-  dateDay(a){     //입력받은 날짜의 요일을 구해줌
-    return new Date(a).getDay();
+  dateDay(day){     //입력받은 날짜의 요일을 구해줌
+    return new Date(day).getDay();
   }
   countSeconds = (str) => {     //HH:MM:SS=>cenond
     const [hh = '0', mm = '0', ss = '0'] = (str || '0:0:0').split(':');
@@ -233,7 +240,7 @@ class AttTable extends Component {
     var Tname='';
     var tempString='';
     var depname='';
-    if(this.props.mode===1){
+    if(this.props.mode===_default){
       if(ItemList.length>1){
         var num=ItemList[1].employee_no;
         for(var i=0;i<ItemList.length;i++){
@@ -277,19 +284,21 @@ class AttTable extends Component {
               value={this.state.name}
               onChange={this.nameChange}
             />
-            <select onChange={this.depChange}>
+            <select onChange={this.depChange} value={this.state.dep}>
               <option value="">부서선택</option>
                 {depList&&depList.map((itemdata, insertIndex) => {
-                  if(this.state.dep===itemdata.no){return(<option value={itemdata.no} selected="selected">{insertIndex+1}.{itemdata.name}</option>);}
-                  else return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
+                  return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
                 })}
             </select>
             <table name="ATT" class="default">
             <thead>
-              <tr class="default"><td class="default">NO</td><td class="default">근무일자</td><td class="default">부서</td>
-              <td class="default">이름</td><td class="default">직급</td><td class="default">출근시간</td>
-              <td class="default">퇴근시간</td><td class="default">출근구분</td><td class="default">퇴근구분</td>
-              <td class="default">연장근무시간</td><td class="default">총근무시간</td></tr>
+              <tr class="default">
+                <td class="default">NO</td><td class="default">근무일자</td><td class="default">부서</td>
+                <td class="default">이름</td><td class="default">직급</td><td class="default">출근시간</td>
+                <td class="default">퇴근시간</td><td class="default">출근구분</td><td class="default">퇴근구분</td>
+                <td class="default">연장근무시간</td><td class="default">총근무시간</td>
+                {HRD_login===true ? <td class="default">수정</td>:""}
+              </tr>
             </thead>
             <tbody>
             {ItemList&&ItemList.map((att) => {
@@ -312,7 +321,7 @@ class AttTable extends Component {
                   <td class="default">{att.no}</td>
                   <td class="default">{att.day}</td>
                   {depList&&depList.map((dep) => { 
-                    if(dep.no===(att.department*=1)) return <td class="default">{dep.name}</td>;
+                    if(dep.no===(Number(att.department))) return <td class="default">{dep.name}</td>;
                     else return null;   
                   })}
                   
@@ -324,6 +333,7 @@ class AttTable extends Component {
                   <td class="default">{bool2}</td>
                   <td class="default">{att.night === 1 && this.reseconds(this.subsec(this.countSeconds(att.end_time),this.countSeconds(time2)))}</td>
                   <td class="default">{this.reseconds(this.subsec(this.countSeconds(att.end_time),this.countSeconds(att.start_time)))}</td>
+                  {HRD_login===true ? <td class="default"><Link to={`/Attendance/${att.no}`}>수정</Link></td>:""}
                 </tr>
               );
             })}
@@ -332,7 +342,7 @@ class AttTable extends Component {
           </div>
         }
 
-        {this.props.mode===1 &&
+        {this.props.mode===_weekly &&
           <div>
             <input 
               type='date'
@@ -344,12 +354,11 @@ class AttTable extends Component {
               value={this.state.name}
               onChange={this.nameChange2}
             />
-            <select onChange={this.depChange2}>
-            <option value="">부서선택</option>
-              {depList&&depList.map((itemdata, insertIndex) => {
-                if(this.state.dep===itemdata.no){return(<option value={itemdata.no} selected="selected">{insertIndex+1}.{itemdata.name}</option>);}
-                else return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
-              })}
+            <select onChange={this.depChange} value={this.state.dep}>
+              <option value="">부서선택</option>
+                {depList&&depList.map((itemdata, insertIndex) => {
+                  return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
+                })}
             </select>
             <table class="b" width="100%" >
             <caption>{this.state.start}~{this.state.end}</caption>
@@ -390,7 +399,7 @@ class AttTable extends Component {
           </div>
         }
             
-        {this.props.mode===2 &&
+        {this.props.mode===_monthly &&
           <div>
               <input 
                 type='date'
@@ -402,13 +411,12 @@ class AttTable extends Component {
                 value={this.state.name}
                 onChange={this.nameChange}
               />
-              <select onChange={this.depChange}>
+              <select onChange={this.depChange} value={this.state.dep}>
               <option value="">부서선택</option>
                 {depList&&depList.map((itemdata, insertIndex) => {
-                  if(this.state.dep===itemdata.no){return(<option value={itemdata.no} selected="selected">{insertIndex+1}.{itemdata.name}</option>);}
-                  else return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
+                  return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
                 })}
-              </select>
+            </select>
               <table class="b" width="100%" >
               <thead>
                 

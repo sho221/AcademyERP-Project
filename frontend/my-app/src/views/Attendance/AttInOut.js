@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 import '../css/table.css';
-var a=window.sessionStorage.getItem('no');
+var session_no=window.sessionStorage.getItem('no');
 
 class AttInOut extends Component {
   in = () =>{
-    axios.post(`http://localhost:8083/api2/in`,{no: a})
+    axios.post(`http://localhost:8083/api2/in`,{no: session_no})
     .then(res => {
       if(res.data){
         alert("출근되었습니다.");
@@ -19,7 +19,7 @@ class AttInOut extends Component {
   
 
   out = () =>{
-    axios.get(`http://localhost:8083/api2/out?no=${a}`)
+    axios.get(`http://localhost:8083/api2/out?no=${session_no}`)
     .then(res => {
       if(res.data){
         alert("퇴근되었습니다.");
@@ -47,7 +47,7 @@ class AttInOut extends Component {
     let night = "18:00:00";
 
     if(this.countSeconds(hours+':'+minutes+':'+seconds)>this.countSeconds(night)){ 
-      axios.get(`http://localhost:8083/api2/night?no=${a}`)
+      axios.get(`http://localhost:8083/api2/night?no=${session_no}`)
       .then(res => {
         if(res.data){
           alert("연장근무후 퇴근을 해주세요.");
