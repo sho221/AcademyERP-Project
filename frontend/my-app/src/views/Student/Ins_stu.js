@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 //import axios from "axios";
+import ApiService from "../../ApiService";
 import {
     CButton,
     CCard,
@@ -36,9 +37,58 @@ import {
    // import { DocsLink } from 'src/reusable'
 
 class Ins_stu extends Component {
-render() {
-return (
-<CRow>
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      name: '',
+      hp: '',
+      email: '',
+      bitrh: '',
+      address: '',
+      curri: '',
+      gender: ''
+    }
+  }
+
+  onChange =(e) => {
+    this.setState({
+      [e.target.name] : e.target.value
+    })
+  }
+
+  saveStudent = (e) => {
+    e.preventDefault();
+
+    console.log(this.state.curri)
+
+    let student = {
+      name : this.state.name,
+      hp : this.state.hp,
+      email : this.state.email,
+      birth : this.state.birth,
+      address : this.state.address,
+      curri : this.state.curri,
+      gender : this.state.gender,
+    }
+
+    ApiService.addStudent(student)
+    .then( res => {
+      this.setState({
+        message : student.name + '님이 성공적으로 등록되었습니다'
+      })
+      console.log(this.state.message);
+      this.props.history.push('/students');
+    })
+    .catch( err => {
+      console.log('saveStudent() 에러', err);
+    });
+
+  }
+  render() {
+    return (
+      <CRow>
         <CCol xs="12" md="6">
           <CCard>
             <CCardHeader>
@@ -46,13 +96,13 @@ return (
               <small> Elements</small>
             </CCardHeader>
             <CCardBody>
-              <CForm action="" method="post" encType="multipart/form-data" className="form-horizontal">
+              <CForm>
                <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="text-input">이름</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="이름" />
+                    <CInput name="name" placeholder="이름" value={this.state.name} onChange={this.onChange} />
                     <CFormText>이름을 입력하세요</CFormText>
                   </CCol>
                 </CFormGroup>
@@ -61,7 +111,7 @@ return (
                     <CLabel htmlFor="text-input">핸드폰 번호</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="핸드폰 번호" />
+                    <CInput name="hp" placeholder="핸드폰 번호" value={this.state.hp} onChange={this.onChange}/>
                     <CFormText>숫자만 입력하세요</CFormText>
                   </CCol>
                 </CFormGroup>
@@ -70,7 +120,7 @@ return (
                     <CLabel htmlFor="email-input">이메일주소</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="email" id="email-input" name="email-input" placeholder="이메일 주소" autoComplete="email"/>
+                    <CInput type="email" name="email" placeholder="이메일 주소" autoComplete="email" value={this.state.email} onChange={this.onChange}/>
                     <CFormText className="help-block">이메일주소를 입력하세요</CFormText>
                   </CCol>
                 </CFormGroup>
@@ -79,14 +129,14 @@ return (
                     <CLabel htmlFor="date-input">생년월일</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="date" id="date-input" name="date-input" placeholder="생년월일" />
+                    <CInput type="date" name="birth" placeholder="생년월일" value={this.state.birth} onChange={this.onChange}/>
                   </CCol>
                 </CFormGroup><CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="text-input">주소 입력</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="주소" />
+                    <CInput name="address" placeholder="주소" value={this.state.address} onChange={this.onChange}/>
                     <CFormText>주소를 입력하세요</CFormText>
                   </CCol>
                 </CFormGroup>
@@ -95,42 +145,37 @@ return (
                     <CLabel htmlFor="select">수강과목</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CSelect custom name="curri" id="curri">
+                    <CSelect custom name="curri" onChange={this.onChange}>
                     <option value="0">과목을 선택하세요</option>
-                      <option value="1">JAVA</option>
-                      <option value="2">PYTHON</option>
-                      <option value="3">C++</option>
-                      <option value="3">KOTLIN</option>
+                      <option value="JAVA">JAVA</option>
+                      <option value="PYTHON">PYTHON</option>
+                      <option value="C++">C++</option>
+                      <option value="KOTLIN">KOTLIN</option>
                     </CSelect>
                   </CCol>
                 </CFormGroup>
-                
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel>성별</CLabel>
+                    <CLabel htmlFor="select">성별</CLabel>
                   </CCol>
-                  <CCol md="9">
-                    <CFormGroup variant="custom-radio" inline>
-                      <CInputRadio custom id="inline-radio1" name="inline-radios" value="male" />
-                      <CLabel variant="custom-checkbox" htmlFor="inline-radio1">남성</CLabel>
-                    </CFormGroup>
-                    <CFormGroup variant="custom-radio" inline>
-                      <CInputRadio custom id="inline-radio2" name="inline-radios" value="female" />
-                      <CLabel variant="custom-checkbox" htmlFor="inline-radio2">여성</CLabel>
-                    </CFormGroup>
+                  <CCol xs="12" md="9">
+                    <CSelect custom name="gender" onChange={this.onChange}>
+                    <option value="0">과목을 선택하세요</option>
+                      <option value="male">male</option>
+                      <option value="female">female</option>
+                    </CSelect>
                   </CCol>
                 </CFormGroup>
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton type="submit" size="sm" color="primary"><CIcon name="cil-scrubber" /> Submit</CButton>
+              <CButton onClick={this.saveStudent} size="sm" color="primary"><CIcon name="cil-scrubber" /> Submit</CButton>
               <CButton type="reset" size="sm" color="danger"><CIcon name="cil-ban" /> Reset</CButton>
             </CCardFooter>
           </CCard>
           </CCol>
         </CRow>
-);
-}
+    );}
 }
 
 export default Ins_stu;
