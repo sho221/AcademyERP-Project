@@ -92,24 +92,28 @@ class AttUpdate extends Component{
   }
 
   handleSubmit(e){
-    var data = [];
+    var indata = [];
     var temp = [];
     for(var i=0;i<e.length;i++){
-      temp.push({[e[i].name]: this.OneToTwo(e[i].value)})
+      temp.push( this.OneToTwo(e[i].value))
     }
-    data.push("day", temp.year+"-"+temp.month+"-"+temp.day);
-    console.log(temp.day);
-    console.log(data);
-    axios.post(`http://localhost:8083/AttUpdate`,data)
-    .then(res => {
-      if(res.data){
-        alert("출근되었습니다.");
-        window.location.reload(false);
-      }else{
-        alert("이미 출근되었습니다.");
-      }
-    })
-    .catch(res => console.log(res)) 
+    indata.push({
+      "no": this.state.attList.no,
+      "employee_no": this.state.attList.employee_no,
+      "day": temp[0]+"-"+temp[1]+"-"+temp[2],
+      "start_time": temp[3]+":"+temp[4]+":"+temp[5],
+      "end_time": temp[6]+":"+temp[7]+":"+temp[8],
+      "night": temp[9]
+    });
+    axios.post(
+      'http://localhost:8083/Attupdate',indata
+    )
+      .then(function (response){
+        console.log(response)
+      })
+      .catch(function (error){
+        console.log(error)
+      })
   }
 
   submit(){
@@ -142,7 +146,7 @@ class AttUpdate extends Component{
           <small> employee : {attList.employee_no}</small>
         </CCardHeader>
         <CCardBody>
-          <CForm className="form-horizontal" id="form" onSubmit={
+          <CForm className="form-horizontal" id="form" method="GET" onSubmit={
             event  => {
               this.handleSubmit(event.target);
             }}>

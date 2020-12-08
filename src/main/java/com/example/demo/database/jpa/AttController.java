@@ -28,7 +28,7 @@ public class AttController {
         return result;
 	}
 	
-	@PutMapping("/AttUpdate")
+	@PostMapping("/Attupdate")
 	public int attupdate(@RequestBody AttendanceDTO dto ){ 
 		int result=1;
         attRepo.save(dto);
