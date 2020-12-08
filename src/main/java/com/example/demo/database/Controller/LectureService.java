@@ -49,16 +49,9 @@ public class LectureService {
 
     }
 
-    @GetMapping("/lecture/edit/{id}")
-    public HashMap<String, Optional> edit(@PathVariable("id") Long id) {
-        HashMap<String, Optional> result = new HashMap<>();
-        Optional<LectureEntity> list = lectureRepository.findById(id);
-        result.put("message", list);
-
-        return result;
-    }
-    @PutMapping("/lecture/edit/{id}")
-    public String update(@RequestBody LectureEntity lec) {
+    @PutMapping("lecture/edit/{id}")
+    public String update(@RequestBody LectureEntity lec,@PathVariable("id") Long id) {
+        lec.setNo(id);
         LectureEntity result =  lectureRepository.save(lec);
         return result.toString();
     }

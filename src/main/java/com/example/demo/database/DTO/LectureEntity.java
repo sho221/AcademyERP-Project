@@ -32,7 +32,6 @@ import lombok.*;
         private int part;
         private int branch;
 
-
         
     }
 

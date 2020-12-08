@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
 import './table.css';
 import LectureAdd from "./LectureAdd";
+import Lecture from "./Lecture";
 
 class Lectures extends Component {
   constructor(props) {
@@ -28,7 +28,6 @@ componentDidMount() {
 getApi = () => {
     axios.get("http://localhost:8080/api2/lecture")
         .then(res => {
-            console.log(res);
             this.setState({
               ItemList: res.data.message
             })
@@ -39,7 +38,6 @@ getApi = () => {
   render() {
     const { ItemList } = this.state;
 
-    console.log(ItemList);
     return (
       <div>
         <header>
@@ -57,11 +55,7 @@ getApi = () => {
             return (
             <tr key={insertIndex}>
                 <td>{itemdata.no}</td>
-                <td>
-
-                  <Link to={`/lecture/${itemdata.no}?id=${itemdata.no}`}>{itemdata.name}</Link>
-
-                </td>
+                <td> <Lecture stateRefresh={this.stateRefresh} id={itemdata.no}/></td>
                 <td>{itemdata.teacher}</td>
                 <td>{itemdata.price}</td>
                 <td>{itemdata.students}</td>

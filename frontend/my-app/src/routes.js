@@ -41,6 +41,9 @@ const Lectures = React.lazy(() => import('./views/lecture/Lectures'));
 const Lecture = React.lazy(() => import('./views/lecture/Lecture'));
 const LectureAdd = React.lazy(() => import('./views/lecture/LectureAdd'));
 const LectureDelete = React.lazy(() => import('./views/lecture/LectureDelete'));
+const LectureUpdate = React.lazy(() => import('./views/lecture/LectureUpdate'));
+
+
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -88,7 +91,8 @@ const routes = [
   { path: '/lecture', exact: true,  name: 'Lectures', component: Lectures },
   { path: '/lecture/:id', exact: true, name: 'Lecture Details', component: Lecture },
   { path: '/lectureAdd', exact: true, name: 'Lecture Add', component: LectureAdd },
-  { path: '/lectureDelete/:id', exact: true, name: 'Lecture Delete', component: LectureDelete }
+  { path: '/lectureDelete/:id', exact: true, name: 'Lecture Delete', component: LectureDelete },
+  { path: '/lectureUpdate', exact: true, name: 'Lecture Update', component: LectureUpdate }
 ];
 
 export default routes;

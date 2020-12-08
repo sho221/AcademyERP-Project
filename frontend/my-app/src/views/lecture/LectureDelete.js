@@ -41,14 +41,15 @@ class LectureDelete extends React.Component {
       method: 'DELETE'
     });
     alert("삭제 되었습니다.");
-    this.props.history.push("/lecture");
+    this.props.stateRefresh();
+   /* this.props.history.push("/lecture");*/
   }
 
 
   render() {
     return (
       <div>
-        <Button variant="contained" color="secondary" onClick={this.handleClickOpen}>
+        <Button variant="outlined" color="secondary" onClick={this.handleClickOpen}>
           삭제
         </Button>
 

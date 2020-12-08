@@ -128,7 +128,7 @@ class LectureAdd extends React.Component {
         <Dialog open={this.state.open} onClose={this.handleClose}>
           <DialogTitle>클래스 추가</DialogTitle>
           <DialogContent>
-            <TextField label="이름" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
+            <TextField label="강의명" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
             <TextField label="강사" type="text" name="teacher" value={this.state.teacher} onChange={this.handleValueChange}/><br/>
             <TextField label="가격" type="text" name="price" value={this.state.price} onChange={this.handleValueChange}/><br/>
             <TextField label="정원수" type="text" name="students" value={this.state.students}
