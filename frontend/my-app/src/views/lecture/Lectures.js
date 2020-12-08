@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 import './table.css';
 import LectureAdd from "./LectureAdd";
-import LectureDelete from "./LectureDelete";
 
 class Lectures extends Component {
   constructor(props) {
