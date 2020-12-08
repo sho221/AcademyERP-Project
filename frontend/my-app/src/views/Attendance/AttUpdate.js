@@ -39,7 +39,11 @@ class AttUpdate extends Component{
   }
   
   OneToTwo(i){
-    if(Number(i)<10) i="0"+i;
+    if(Number(i)<10){
+      if(i.length<2){
+        i="0"+i;
+      }
+    } 
     return i;
   }
 
@@ -88,19 +92,19 @@ class AttUpdate extends Component{
   }
 
   handleSubmit(e){
-    var data = new FormData();
+    var data = [];
+    var temp = [];
     for(var i=0;i<e.length;i++){
-      data.append([e[i].name], e[i].value);
+      temp.push({[e[i].name]: this.OneToTwo(e[i].value)})
     }
-    axios({
-      method: 'post',
-      url: 'http://localhost:8083/AttUpdate',
-      data: data,
-      headers: {'Content-Type': 'multipart/form-data' }
-      }).then(res => {
+    data.push("day", temp.year+"-"+temp.month+"-"+temp.day);
+    console.log(temp.day);
+    console.log(data);
+    axios.post(`http://localhost:8083/AttUpdate`,data)
+    .then(res => {
       if(res.data){
-        alert("수정");
-        this.props.history.push("/Attendance");
+        alert("출근되었습니다.");
+        window.location.reload(false);
       }else{
         alert("이미 출근되었습니다.");
       }
