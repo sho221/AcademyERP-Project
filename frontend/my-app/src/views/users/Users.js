@@ -38,39 +38,39 @@ class Users extends Component {
       const { depList } = this.state;
       return (
       <div>
-        <table  class="a">
+        <table  class="default">
         <thead>
-          <tr  class="a"><td class="a">NO</td><td  class="a">NAME</td><td  class="a">ID</td><td  class="a">password</td><td  class="a">HP</td><td  class="a">ADDRESS</td>
-          <td  class="a">E-MAIL</td><td  class="a">BIRTH</td><td  class="a">SEX</td><td  class="a">RANK</td><td  class="a">SAL</td><td  class="a">DEPART</td><td  class="a">BRANCH</td>
-          <td class="a">PROFILE</td><td class="a">VERIFY</td><td class="a">DATE</td></tr>
+          <tr  class="default"><td class="default">NO</td><td  class="default">NAME</td><td  class="default">ID</td><td  class="default">password</td><td  class="default">HP</td><td  class="default">ADDRESS</td>
+          <td  class="default">E-MAIL</td><td  class="default">BIRTH</td><td  class="default">SEX</td><td  class="default">RANK</td><td  class="default">SAL</td><td  class="default">DEPART</td><td  class="default">BRANCH</td>
+          <td class="default">PROFILE</td><td class="default">VERIFY</td><td class="default">DATE</td></tr>
         </thead>
         <tbody>
          {userList&&userList.map((items) => {
             return (
-            <tr class="a">
-                <td class="a">{items.no}</td>
-                <td class="a"><Link to={`/users/${items.no}`}>{items.name}</Link></td>
-                <td class="a">{items.id}</td>
-                <td class="a">{items.password}</td>
-                <td class="a">{items.hp}</td>
-                <td class="a">{items.address}</td>
-                <td class="a">{items.email}</td>
-                <td class="a">{items.birth}</td>
-                <td class="a">{items.sex}</td>
-                <td class="a">{items.rank}</td>
-                <td class="a">{items.salary}</td>
+            <tr class="default">
+                <td class="default">{items.no}</td>
+                <td class="default"><Link to={`/users/${items.no}`}>{items.name}</Link></td>
+                <td class="default">{items.id}</td>
+                <td class="default">{items.password}</td>
+                <td class="default">{items.hp}</td>
+                <td class="default">{items.address}</td>
+                <td class="default">{items.email}</td>
+                <td class="default">{items.birth}</td>
+                <td class="default">{items.sex}</td>
+                <td class="default">{items.rank}</td>
+                <td class="default">{items.salary}</td>
                 {depList&&depList.map((dep)=>{
                   if(dep.no===Number(items.department)){
-                    return(<td class="a">{dep.name}</td>);
+                    return(<td class="default">{dep.name}</td>);
                   }else{
                     return("");
                   }
                 })}
-                <td class="a">{items.branch}</td>
-                <td class="a">{items.profile_name}</td>
-                <td class="a">{items.verify}</td>
-                <td class="a">{items.regidate}</td>
-                <td><Link to={`/logintest/${items.no}/${items.name}/${items.department}`}>로그인</Link></td>
+                <td class="default">{items.branch}</td>
+                <td class="default">{items.profile_name}</td>
+                <td class="default">{items.verify}</td>
+                <td class="default">{items.regidate}</td>
+                <td class="default"><Link to={`/logintest/${items.no}/${items.name}/${items.department}`}>로그인</Link></td>
               </tr>
             );
           })}

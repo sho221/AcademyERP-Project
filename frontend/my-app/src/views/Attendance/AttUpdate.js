@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {CButton,CCard,CCardBody, CCardFooter,CCardHeader,CCol,CForm,CFormGroup,CRow,CSelect,CLabel} from '@coreui/react'
+import {CButton,CCard,CCardBody, CCardFooter,CCardHeader,CCol,CForm,CFormGroup,CRow,CSelect,CLabel,CInput} from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import axios from "axios";
 import moment from "moment"
@@ -10,21 +10,54 @@ class AttUpdate extends Component{
     super(props)
     this.state = {
       attList: "",
+      no: "",
+      employee_no: "",
+      year: "",
+      month: "",
       day: "",
-      start_time: "",
-      end_time: "",
+      SH: "",
+      SM: "",
+      SS: "",
+      EH: "",
+      EM: "",
+      ES: "",
       night: ""
     }
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.handleValueChange = this.handleValueChange.bind(this)
   }
   componentDidMount(){
     const { params } = this.props.match;
-    axios.get("http://localhost:8083/Attget?no="+params.no).then(res => {
+    axios.get("http://localhost:8083/api/Attget?no="+params.no).then(res => {
       console.log(res);
       this.setState({
         attList: res.data.list
       })
+      const yyyy=moment(res.data.list.day).format("YYYY");
+      const mm=moment(res.data.list.day).format("MM");
+      const dd=moment(res.data.list.day).format("DD");
+      const S_hh=moment("2020-11-11 "+res.data.list.start_time).format("HH");
+      const S_mi=moment("2020-11-11 "+res.data.list.start_time).format("mm");
+      const S_ss=moment("2020-11-11 "+res.data.list.start_time).format("ss");
+      const E_hh=moment("2020-11-11 "+res.data.list.end_time).format("HH");
+      const E_mi=moment("2020-11-11 "+res.data.list.end_time).format("mm");
+      const E_ss=moment("2020-11-11 "+res.data.list.end_time).format("ss");
+      this.setState({
+      no: res.data.list.no,
+      employee_no: res.data.list.employee_no,
+      year: yyyy,
+      month: mm,
+      day: dd,
+      SH: S_hh,
+      SM: S_mi,
+      SS: S_ss,
+      EH: E_hh,
+      EM: E_mi,
+      ES: E_ss,
+      night: res.data.list.night
+    })
     }).catch(res => console.log(res))
-
+    
   }
 
   getMAX_day(y,m){
@@ -82,42 +115,40 @@ class AttUpdate extends Component{
     const E_mi=moment("2020-11-11 "+attList.end_time).format("mm");
     const E_ss=moment("2020-11-11 "+attList.end_time).format("ss");
    
-    var list=[yyyy,mm,Number(dd),S_hh,S_mi,S_ss,E_hh,E_mi,E_ss,attList.night]
+    var list=[yyyy,Number(mm),Number(dd),S_hh,S_mi,S_ss,E_hh,E_mi,E_ss,attList.night]
     var tag = document.getElementsByClassName("re");
     for(var i=0;i<tag.length;i++){
       console.log(list[i])
-      console.log(tag[i].value)
       tag[i].value=list[i]
     }
   }
 
-  handleSubmit(e){
-    var indata = [];
-    var temp = [];
-    for(var i=0;i<e.length;i++){
-      temp.push( this.OneToTwo(e[i].value))
-    }
-    indata.push({
-      "no": this.state.attList.no,
-      "employee_no": this.state.attList.employee_no,
-      "day": temp[0]+"-"+temp[1]+"-"+temp[2],
-      "start_time": temp[3]+":"+temp[4]+":"+temp[5],
-      "end_time": temp[6]+":"+temp[7]+":"+temp[8],
-      "night": temp[9]
-    });
-    axios.post(
-      'http://localhost:8083/Attupdate',indata
-    )
-      .then(function (response){
-        console.log(response)
-      })
+  handleFormSubmit() {
+    axios.post(`http://localhost:8083/api/Attupdate/`+this.state.no,{
+      no: this.state.no,
+      employee_no: Number(this.state.employee_no),
+      day: this.state.year+"-"+this.state.month+"-"+this.state.day,
+      start_time: this.state.SH+":"+this.state.SM+":"+this.state.SS,
+      end_time: this.state.EH+":"+this.state.EM+":"+this.state.ES,
+      night: this.state.night  
+    })
+      .then(
+        console.log("ASD"+this.state.employee_no),
+        console.log("ASD"+this.state.SH+":"+this.state.SM+":"+this.state.SS),
+        console.log("ASD"+this.state.EH+":"+this.state.EM+":"+this.state.ES),
+
+        alert("수정"),
+        document.location.href = "#/Attendance"
+      )
       .catch(function (error){
         console.log(error)
       })
   }
 
-  submit(){
-    document.getElementById("form").submit();
+  handleValueChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
   }
 
   render(){
@@ -146,15 +177,11 @@ class AttUpdate extends Component{
           <small> employee : {attList.employee_no}</small>
         </CCardHeader>
         <CCardBody>
-          <CForm className="form-horizontal" id="form" method="GET" onSubmit={
-            event  => {
-              this.handleSubmit(event.target);
-            }}>
             <CRow>
               <CCol xs="4">
                 <CFormGroup>
                   <CLabel htmlFor="ccyear">Year</CLabel>
-                  <CSelect custom name="year" id="ccyear" className="re">
+                  <CSelect custom name="year" id="ccyear" className="re" onChange={this.handleValueChange}>
                     {years.map((yeardata)=>{
                       if(yeardata===Number(yyyy)){return( <option selected="selected" value={yeardata}>{yeardata}</option> )}
                       else{return( <option value={yeardata}>{yeardata}</option> )}
@@ -165,7 +192,7 @@ class AttUpdate extends Component{
               <CCol xs="4">
                 <CFormGroup>
                   <CLabel htmlFor="ccmonth">Month</CLabel>
-                  <CSelect custom name="month" id="ccmonth" className="re">
+                  <CSelect custom name="month" id="ccmonth" className="re" onChange={this.handleValueChange}> 
                     {months.map((monthdata)=>{
                       if(monthdata===Number(mm)){return( <option selected="selected" value={monthdata}>{monthdata}</option> );}
                       else{return( <option value={monthdata}>{monthdata}</option> );}
@@ -176,7 +203,7 @@ class AttUpdate extends Component{
               <CCol xs="4">
                 <CFormGroup>
                   <CLabel htmlFor="ccmonth">Day</CLabel>
-                  <CSelect custom name="day" id="ccmonth" className="re">
+                  <CSelect custom name="day" id="ccmonth" className="re" onChange={this.handleValueChange}>
                     {days.map((daydata)=>{
                       if(daydata===Number(dd)) return(<option selected="selected" value={daydata}>{daydata}</option>);
                       else return(<option value={daydata}>{daydata}</option>)
@@ -190,7 +217,7 @@ class AttUpdate extends Component{
                 <CLabel htmlFor="hf-email">START</CLabel>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="SH" id="ccmonth" className="re">
+                <CSelect custom name="SH" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {times.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(S_hh))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -198,7 +225,7 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="SM" id="ccmonth" className="re">
+                <CSelect custom name="SM" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {mins.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(S_mi))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -206,10 +233,10 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="SS" id="ccmonth" className="re">
+                <CSelect custom name="SS" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {secs.map((daydata)=>{
-                    if(daydata===this.OneToTwo(Number(S_ss))) return(<option selected="selected" value={daydata}>{daydata}</option>);
-                    else return(<option value={daydata}>{daydata}</option>)
+                    if(daydata===this.OneToTwo(Number(S_ss))) return(<option selected="selected" value={this.OneToTwo(daydata)}>{this.OneToTwo(daydata)}</option>);
+                    else return(<option value={this.OneToTwo(daydata)}>{this.OneToTwo(daydata)}</option>)
                   })}
                 </CSelect>
               </CCol>
@@ -218,7 +245,7 @@ class AttUpdate extends Component{
                 <CLabel htmlFor="hf-email">END</CLabel>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="EH" id="ccmonth" className="re">
+                <CSelect custom name="EH" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {times.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(E_hh))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -226,7 +253,7 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="EM" id="ccmonth" className="re">
+                <CSelect custom name="EM" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {mins.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(E_mi))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -234,7 +261,7 @@ class AttUpdate extends Component{
                 </CSelect>
               </CCol>
               <CCol xs="12" md="3">
-                <CSelect custom name="ES" id="ccmonth" className="re">
+                <CSelect custom name="ES" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {secs.map((daydata)=>{
                     if(daydata===this.OneToTwo(Number(E_ss))) return(<option selected="selected" value={daydata}>{daydata}</option>);
                     else return(<option value={daydata}>{daydata}</option>)
@@ -246,7 +273,7 @@ class AttUpdate extends Component{
                 <CLabel htmlFor="hf-email">NIGHT</CLabel>
               </CCol>
               <CCol xs="12" md="9">
-                <CSelect custom name="night" id="ccmonth" className="re"> 
+                <CSelect custom name="night" id="ccmonth" className="re" onChange={this.handleValueChange}> 
                   {OX.map((ox) => {
                     var temp="O"
                     if(ox===0) temp="X";
@@ -257,9 +284,8 @@ class AttUpdate extends Component{
               </CCol>
             </CFormGroup>
             <CCardFooter>
-          <CButton type="submit" size="sm" color="primary" ><CIcon name="cil-scrubber" /> Submit</CButton> <CButton size="sm" color="danger" onClick={()=>{this.reset()}}><CIcon name="cil-ban" /> Reset</CButton>
+          <CButton onClick={()=>{this.handleFormSubmit()}} size="sm" color="primary" ><CIcon name="cil-scrubber" /> Submit</CButton> <CButton size="sm" color="danger" onClick={()=>{this.reset()}}><CIcon name="cil-ban" /> Reset</CButton>
         </CCardFooter>
-          </CForm>
         </CCardBody>
       </CCard>       
     )
