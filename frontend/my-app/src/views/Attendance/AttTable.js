@@ -4,7 +4,6 @@ import '../css/table.css';
 import { Link } from 'react-router-dom';
 import Moment from "moment"
 
-
 const _numbers=[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const _color=["#F5A9BC","#58FAF4","#F3F781","#00FFBF","#82FA58"];
 const _week=[1,2,3,4,5,6,0];
@@ -30,7 +29,9 @@ class AttTable extends Component {
         name: '',
         dep: '',
         start: '',
-        end: ''
+        end: '',
+        mode: this.props.mode,
+        loopCheck: true
     }
     this.nameChange = this.nameChange.bind(this);
     this.dayChange = this.dayChange.bind(this);
@@ -38,12 +39,23 @@ class AttTable extends Component {
     this.nameChange2 = this.nameChange2.bind(this);
     this.dayChange2 = this.dayChange2.bind(this);
     this.depChange2 = this.depChange2.bind(this);
-    this.dateDay = this.dateDay.bind(this);
+    this.dateDay = this.dateDay.bind(this); 
+    this.getWeekly = this.getWeekly.bind(this);
   }
   componentDidMount() {
     this.getApi();
   }
-  
+  DayToSETime(value){
+    var getDay=this.dateDay(value)-1
+    var start=Moment(value).add(getDay*-1,'days').format("YYYY-MM-DD")
+    var end=Moment(start).add(6,'days').format("YYYY-MM-DD")
+    this.setState({
+      day: value,
+      start: start,
+      end: end
+    })
+    return({start: start,end: end})
+  }
   timemap(time){          //일간 처음 빈공간을 구해줌
     var arr=[];
     var temp = new Date("2020-11-11 "+time)
@@ -128,8 +140,10 @@ class AttTable extends Component {
   }
   dayChange = (e) => {        //day변경 
     this.setState({
-      day: e.target.value
+      day: e.target.value,
+      loopCheck: true
     })
+    this.DayToSETime(e.target.value);
     axios({
       method:'get',
       url:encodeURI('http://localhost:8083/api2/attfind?day='+e.target.value+'&name='+this.state.name+'&dep='+this.state.dep),
@@ -175,18 +189,11 @@ class AttTable extends Component {
       }).catch(res => console.log(res))
   } 
   dayChange2 = (e) => {       //주간 day변경
-    var getDay=this.dateDay(e.target.value)-1
-    var start=Moment(e.target.value).add(getDay*-1,'days').format("YYYY-MM-DD")
-    var end=Moment(start).add(6,'days').format("YYYY-MM-DD")
-    this.setState({
-      day: e.target.value,
-      start: Moment(e.target.value).add(getDay*-1,'days').format("YYYY-MM-DD"),
-      end: Moment(start).add(6,'days').format("YYYY-MM-DD")
-    })
+    var Time=this.DayToSETime(e.target.value);
 
     axios({
       method:'get',
-      url:encodeURI('http://localhost:8083/api2/attfind3?start='+start+'&end='+end+'&name='+this.state.name+'&dep='+this.state.dep),
+      url:encodeURI('http://localhost:8083/api2/attfind3?start='+Time.start+'&end='+Time.end+'&name='+this.state.name+'&dep='+this.state.dep),
       responseType:'stream',
       responseEncoding: 'UTF-8',
     }).then(res => {
@@ -203,6 +210,27 @@ class AttTable extends Component {
     axios({
       method:'get',
       url:encodeURI('http://localhost:8083/api2/attfind3?start='+this.state.start+'&end='+this.state.end+'&name='+this.state.name+'&dep='+e.target.value),
+      responseType:'stream',
+      responseEncoding: 'UTF-8',
+    }).then(res => {
+        console.log(res); 
+        this.setState({
+        ItemList: res.data.list
+        })
+      }).catch(res => console.log(res))
+  }
+  getWeekly(day){
+    var getDay=this.dateDay(day)-1
+    var start=Moment(day).add(getDay*-1,'days').format("YYYY-MM-DD")
+    var end=Moment(start).add(6,'days').format("YYYY-MM-DD")
+    this.setState({
+      day: day,
+      start: start,
+      end: end
+    })
+    axios({
+      method:'get',
+      url:encodeURI('http://localhost:8083/api2/attfind3?start='+start+'&end='+end+'&name='+this.state.name+'&dep='+this.state.dep),
       responseType:'stream',
       responseEncoding: 'UTF-8',
     }).then(res => {
@@ -230,7 +258,6 @@ class AttTable extends Component {
     })
     .catch(res => console.log(res))
   }
-  
 
   render() {
     const { ItemList } = this.state;
@@ -240,9 +267,17 @@ class AttTable extends Component {
     var Tname='';
     var tempString='';
     var depname='';
+  
     if(this.props.mode===_weekly){
-      if(ItemList.length>1){
-        var num=ItemList[1].employee_no;
+      if(this.state.day===''){
+        this.getWeekly(this.state.today)
+        this.setState({day: this.state.today})
+      }else if(this.state.loopCheck){
+        this.getWeekly(this.state.day)
+        this.setState({loopCheck: false})
+      }
+      if(ItemList.length>=1){
+        var num=ItemList[0].employee_no;
         for(var i=0;i<ItemList.length;i++){
           for(var l=0;l<depList.length;l++){
             if(ItemList[i].department*1===depList[l].no){
@@ -341,8 +376,9 @@ class AttTable extends Component {
           </table>
           </div>
         }
-
-        {this.props.mode===_weekly &&
+        
+        {this.props.mode===_weekly && 
+          
           <div>
             <input 
               type='date'
@@ -354,7 +390,7 @@ class AttTable extends Component {
               value={this.state.name}
               onChange={this.nameChange2}
             />
-            <select onChange={this.depChange} value={this.state.dep}>
+            <select onChange={this.depChange2} value={this.state.dep}>
               <option value="">부서선택</option>
                 {depList&&depList.map((itemdata, insertIndex) => {
                   return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
@@ -365,9 +401,13 @@ class AttTable extends Component {
               <thead>
                 <tr>
                   <th width="10%" class="a"></th>
-                  <th class="default">월</th><th class="default">화</th><th class="default">수</th>
-                  <th class="default">목</th><th class="default">금</th><th class="default">토</th>
-                  <th class="default">일</th>
+                  <th class="default">{Moment(this.state.start).add(0,'days').format("MM-DD")}     [월]</th>
+                  <th class="default">{Moment(this.state.start).add(1,'days').format("MM-DD")}     [화]</th>
+                  <th class="default">{Moment(this.state.start).add(2,'days').format("MM-DD")}     [수]</th>
+                  <th class="default">{Moment(this.state.start).add(3,'days').format("MM-DD")}     [목]</th>
+                  <th class="default">{Moment(this.state.start).add(4,'days').format("MM-DD")}     [금]</th>
+                  <th class="default">{Moment(this.state.start).add(5,'days').format("MM-DD")}     [토]</th>
+                  <th class="default">{Moment(this.state.start).add(6,'days').format("MM-DD")}     [일]</th>
                 </tr>
               </thead>
               <tbody>
