@@ -30,4 +30,8 @@
         update attendance set end_time=SYSDATE() where employee_no=#{no} and date(day) = date(now())
     </update>
 
-</mapper> 
+    <select id="cyear" parameterType="int" resultType="DTO"> 
+       SELECT department, MONTH(day) AS name, COUNT(*) AS rank FROM attendance a JOIN employee b WHERE a.employee_no=b.`no` AND YEAR(day) = #{year} GROUP BY b.department,MONTH(day);
+    </select>
+
+</mapper>  

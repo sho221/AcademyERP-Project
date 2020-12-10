@@ -150,22 +150,23 @@ class AttUpdate extends Component{
   }
   render(){
     const { attList } = this.state;
+    const day=moment(attList.day).format("YYYY-MM-DD")+" ";
     const yyyy=moment(attList.day).format("YYYY");
     const mm=moment(attList.day).format("MM");
     const dd=moment(attList.day).format("DD");
-    const S_hh=moment("2020-11-11 "+attList.start_time).format("HH");
-    const S_mi=moment("2020-11-11 "+attList.start_time).format("mm");
-    const S_ss=moment("2020-11-11 "+attList.start_time).format("ss");
-    const E_hh=moment("2020-11-11 "+attList.end_time).format("HH");
-    const E_mi=moment("2020-11-11 "+attList.end_time).format("mm");
-    const E_ss=moment("2020-11-11 "+attList.end_time).format("ss");
+    const S_hh=moment(day+attList.start_time).format("HH");
+    const S_mi=moment(day+attList.start_time).format("mm");
+    const S_ss=moment(day+attList.start_time).format("ss");
+    const E_hh=moment(day+attList.end_time).format("HH");
+    const E_mi=moment(day+attList.end_time).format("mm");
+    const E_ss=moment(day+attList.end_time).format("ss");
     const MAX_day=this.getMAX_day(yyyy,mm);
     const years=this.makeYears(yyyy);
     const days=this.makeDays(MAX_day);
     const months=[1,2,3,4,5,6,7,8,9,10,11,12];
     const times=this.makeDays(24);
-    const mins=this.makeTimes(60);
-    const secs=this.makeTimes(60);
+    const mins=this.makeTimes(59);
+    const secs=this.makeTimes(59);
     const OX=[0,1];
     return (
       <CCard>

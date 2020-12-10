@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {CChartLine} from '@coreui/react-chartjs';
+import {CCard,CCardBody,CCardHeader} from '@coreui/react';
 import '../css/table.css';
 import { Link } from 'react-router-dom';
 import Moment from "moment"
@@ -7,7 +9,7 @@ import Moment from "moment"
 const _numbers=[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const _color=["#F5A9BC","#58FAF4","#F3F781","#00FFBF","#82FA58"];
 const _week=[1,2,3,4,5,6,0];
-const _default=0,_weekly=1,_monthly=2;
+const _default=0,_weekly=1,_monthly=2,_Chart=3;
 const _HRD=1;
 let HRD_login=false;
 var session_dep=window.sessionStorage.getItem('dep');
@@ -30,6 +32,7 @@ class AttTable extends Component {
         dep: '',
         start: '',
         end: '',
+        cyear: '',
         mode: this.props.mode,
         loopCheck: true
     }
@@ -84,7 +87,7 @@ class AttTable extends Component {
   timemap3(time1,time2){      //1,2채우고 나머지공간을 구해줌
     var arr=[];
     var timesum=this.timemap(time1).length+this.timemap2(time1,time2).length;
-    for (var index = 0; index < 117-timesum; index++) {
+    for (var index = 0; index < 116-timesum; index++) {
       arr.push(index)
     }
     return arr;
@@ -218,6 +221,19 @@ class AttTable extends Component {
         })
       }).catch(res => console.log(res))
   }
+  CyearChange = (e) =>{
+    axios({
+      method:'get',
+      url:encodeURI('http://localhost:8083/api2/attCyear?year='+e.target.value),
+      responseType:'stream',
+      responseEncoding: 'UTF-8',
+    }).then(res => {
+        console.log(res); 
+        this.setState({
+        cyear: res.data.list
+        })
+      }).catch(res => console.log(res))
+  }
   getWeekly(day){
     var getDay=this.dateDay(day)-1
     var start=Moment(day).add(getDay*-1,'days').format("YYYY-MM-DD")
@@ -260,6 +276,57 @@ class AttTable extends Component {
         })
       }).catch(res => console.log(res))
   }
+  makeYears(yyyy){
+    var result=[];
+    for(var i=4;i>=0;i--) result.push(Number(yyyy)-i)   
+    for(var l=1;l<5;l++) result.push(Number(yyyy)+l)    
+    return result;
+  }
+  makedata(dep){
+    const { cyear } = this.state;
+    var re=[]
+    var cyears=[]
+    for(var i=0;i<cyear.length;i++){
+      if(Number(cyear[i].department)===Number(dep)){
+        cyears.push(cyear[i])
+      }
+    }
+
+    for(var a=1;a<=12;a++){
+      var bool=true;
+      for(var n=0;n<cyears.length;n++){
+        if(Number(cyears[n].name)===a) {
+          re.push(cyears[n].rank)
+          bool=false;
+        }
+      }
+      if(bool) re.push(0)
+    }
+     console.log(re);
+    return re;
+  }
+  cyearsMake(){
+    const { depList } = this.state;
+    var result=[];
+    var Tlabel,Tbgc,Tdata=[];
+    var rgbController=0;
+    const rgb=["rgb(400,100,100,0.9)","rgb(170,300,170,0.9)","rgb(210,10,310,0.9)",
+      "rgb(250,250,250,0.9)","rgb(290,290,290,0.9)","rgb(333,333,331,0.9)"]
+    for(var i=0;i<depList.length;i++){
+      Tlabel=depList[i].name;
+      Tbgc=rgb[rgbController];
+      Tdata=this.makedata(depList[i].no);
+      var temp={
+        label: Tlabel,
+        backgroundColor: Tbgc,
+        data: Tdata
+      };
+      result.push(temp);rgbController++;
+      if(rgbController>6) rgbController=0;
+    }
+
+    return result;
+  }
   getApi = () => {
     axios.get("http://localhost:8083/api2/att")
         .then(res => {
@@ -283,11 +350,20 @@ class AttTable extends Component {
     const { ItemList } = this.state;
     const { depList } = this.state;
     const { q } = this.state;
+    const { cyear } = this.state;
+    var years;
     var temp=[];
     var Tname='';
     var tempString='';
     var depname='';
-  
+    var cyearDATA=[];
+    
+    if(this.props.mode===_Chart){
+      years=this.makeYears(2020);
+      if(cyear.length>0){
+        cyearDATA=this.cyearsMake();
+      }
+    }
     if(this.props.mode===_weekly){
       if(this.state.day===''){
         this.getWeekly(this.state.today)
@@ -397,8 +473,7 @@ class AttTable extends Component {
             </tbody> 
           </table>
           </div>
-        }
-        
+        }       
         {this.props.mode===_weekly &&        
           <div>
             <input 
@@ -460,7 +535,6 @@ class AttTable extends Component {
             </table>
           </div>
         }
-            
         {this.props.mode===_monthly &&
           <div>
               <input 
@@ -488,7 +562,7 @@ class AttTable extends Component {
                   <th width="10%" >{this.state.day}</th>
                   {_numbers.map((member,) => {
                     return(
-                      <th width="4%" class="a" colSpan="6">{member}</th>
+                      <th width="4%" class="default" colSpan="6">{member}</th>
                     );
                   })}
                 </tr>
@@ -531,11 +605,36 @@ class AttTable extends Component {
                           if(count<6){return( <td name={insertIndex4}></td> );}
                           else{count=0; return( <td name={insertIndex4} class="e"></td> );}
                         })}
+                        <td class="end"></td>
                       </tr>
                     );
                 })}
               </tbody>
             </table>
+          </div>
+        }
+        {this.props.mode===_Chart &&
+          <div>
+              <CCard>
+                <CCardHeader>
+                    부서별 차트
+                    <select name="Cyear" onChange={this.CyearChange}>
+                      <option>연도 입력</option>
+                      {years.map((year)=>{
+                        return(
+                          <option value={year}>{year}</option>
+                        );
+                      })}
+                    </select>
+                </CCardHeader>
+                <CCardBody>
+                <CChartLine
+                    datasets={cyearDATA}
+                    options={{tooltips: { enabled: true}}}
+                    labels="months"
+                />
+                </CCardBody>
+              </CCard> 
           </div>
         }
       </div>

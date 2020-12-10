@@ -28,3 +28,6 @@
   .sm{
     border:1px solid #444444;
   }
+  .end{
+    border-right: 1px solid #444444;
+  }

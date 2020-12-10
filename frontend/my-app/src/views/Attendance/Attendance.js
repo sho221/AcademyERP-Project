@@ -22,12 +22,13 @@ class Users extends Component {
   
 
   render() {
-    const _default=0,_weekly=1,_monthly=2;
+    const _default=0,_weekly=1,_monthly=2,_chart=3;
     return (
       <div>
         <button onClick={() => {this.change(_default); }}>기본</button>
         <button onClick={() => {this.change(_weekly); }}>주간</button>
         <button onClick={() => {this.change(_monthly); }}>일간</button>
+        <button onClick={() => {this.change(_chart); }}>차트</button>
  
           <div>
             <AttTable mode={this.state.mode}/>

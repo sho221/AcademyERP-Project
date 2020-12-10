@@ -16,7 +16,7 @@ public class DBController {
     @Autowired
     private DBInterface db;
 
-    @GetMapping("/att")
+    @GetMapping("/att") 
     public Map<String,List<DTO>> demo() {
         HashMap<String,List<DTO>> result = new HashMap<>();
 		List<DTO> list = db.att();
@@ -109,4 +109,14 @@ public class DBController {
         return result;
     } 
 
+    @GetMapping("/attCyear")
+    public Map<String,List<DTO>> cyear(@RequestParam("year") int year){
+        HashMap<String,List<DTO>> result =new HashMap<>();
+        
+        List<DTO> list = db.cyear(year);
+        result.put("list", list); 
+
+
+        return result;  
+    } 
 }

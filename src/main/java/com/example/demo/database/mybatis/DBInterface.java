@@ -16,4 +16,5 @@ public interface DBInterface {
     int out(int no);
     int night(int no);
     List<DTO> datecheck(HashMap<String,Object> map);
+    List<DTO> cyear(int year);
 }
