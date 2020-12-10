@@ -48,7 +48,8 @@ class Ins_stu extends Component {
       bitrh: '',
       address: '',
       curri: '',
-      gender: ''
+      gender: '',
+      regdate:''
     }
   }
 
@@ -72,9 +73,11 @@ class Ins_stu extends Component {
       address : this.state.address,
       curri : this.state.curri,
       gender : this.state.gender,
+      regdate : this.state.regdate
     }
 
     console.log(this.state.curri)
+
     ApiService.addStudent(student)
     .then( res => {
       this.setState({
@@ -123,7 +126,7 @@ class Ins_stu extends Component {
                     <CLabel htmlFor="email-input">이메일주소</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="email" name="email" placeholder="이메일 주소" autoComplete="email" value={this.state.email} onChange={this.onChange}/>
+                    <CInput name="email" placeholder="이메일 주소" value={this.state.email} onChange={this.onChange}/>
                     <CFormText className="help-block">이메일주소를 입력하세요</CFormText>
                   </CCol>
                 </CFormGroup>
