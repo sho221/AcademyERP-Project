@@ -10,7 +10,7 @@ import lombok.*;
     @Entity
     @Table(name = "employee")
     @Getter
-    @Setter
+    @Setter  
     @Data
     public class BoardEntity implements Serializable {
 	
