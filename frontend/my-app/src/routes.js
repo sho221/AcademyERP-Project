@@ -37,6 +37,12 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
+const Consult_Insert = React.lazy(() => import('./views/consult/Consult_Insert'));
+const Consult_Call = React.lazy(() => import('./views/consult/Consult_Call'));
+const Consult_Online = React.lazy(() => import('./views/consult/Consult_Online'));
+const Consult_Delete = React.lazy(() => import('./views/consult/Consult_Delete'));
+const Consult_Update = React.lazy(() => import('./views/consult/Consult_Update'))
+
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -78,7 +84,12 @@ const routes = [
   { path: '/notifications/toaster', name: 'Toaster', component: Toaster },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User }
+  { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/consult/Consult_Call', exact: true, name:'Consult_Call', component: Consult_Call},
+  { path: '/consult/Consult_Online', exact: true, name:'Consult_Online', component: Consult_Online},
+  { path: '/consult/Consult_Insert', exact: true, name:'Consult_Insert', component: Consult_Insert},
+  { path: '/consult/Consult_Delete', exact: true, name:'Consult_Delete', component: Consult_Delete},
+  { path: '/consult/Consult_Update', exact: true, name:'Consult_Update', component: Consult_Update}
 ];
 
 export default routes;

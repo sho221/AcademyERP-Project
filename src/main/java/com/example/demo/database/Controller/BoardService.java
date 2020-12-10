@@ -1,5 +1,4 @@
-package com.example.demo.database;
-
+package com.example.demo.database.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,8 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.database.DTO.BoardEntity;
+import com.example.demo.database.Repository.BoardRepository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api")
