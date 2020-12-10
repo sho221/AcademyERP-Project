@@ -158,7 +158,9 @@ class AttUpdate extends Component{
       <CCard>
         <CCardHeader>
           Number : {attList.no}///{mins[1]}
-          <small> employee : {attList.employee_no}</small>
+          <small> employee : {attList.employee_no}</small>  
+
+          
         </CCardHeader>
         <CCardBody>
             <CRow>
