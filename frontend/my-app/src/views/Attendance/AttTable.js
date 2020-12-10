@@ -240,6 +240,28 @@ class AttTable extends Component {
         })
       }).catch(res => console.log(res))
   }
+  DayReset(){
+    alert("날짜 초기화")
+    var day=document.getElementsByClassName("day")
+    for(var i=0;i<day.length;i++){
+      day[i].value="";
+    }
+    this.setState({
+      day: '',
+      loopCheck: true
+    })
+    axios({
+      method:'get',
+      url:encodeURI('http://localhost:8083/api2/attfind?day=&name='+this.state.name+'&dep='+this.state.dep),
+      responseType:'stream',
+      responseEncoding: 'UTF-8',
+    }).then(res => {
+        console.log(res); 
+        this.setState({
+        ItemList: res.data.list
+        })
+      }).catch(res => console.log(res))
+  }
   getApi = () => {
     axios.get("http://localhost:8083/api2/att")
         .then(res => {
@@ -313,6 +335,7 @@ class AttTable extends Component {
               type='date'
               value={this.state.day}
               onChange={this.dayChange}
+              class="day"
             />
             <input
               placeholder="이름"
@@ -325,6 +348,7 @@ class AttTable extends Component {
                   return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
                 })}
             </select>
+            <button onClick={() =>{this.DayReset()}}>날짜 초기화</button>
             <table name="ATT" class="default">
             <thead>
               <tr class="default">
@@ -377,13 +401,13 @@ class AttTable extends Component {
           </div>
         }
         
-        {this.props.mode===_weekly && 
-          
+        {this.props.mode===_weekly &&        
           <div>
             <input 
               type='date'
               value={this.state.day}
               onChange={this.dayChange2}
+              class="day"
             />
             <input
               placeholder="이름"
@@ -445,6 +469,7 @@ class AttTable extends Component {
                 type='date'
                 value={this.state.day}
                 onChange={this.dayChange}
+                class="day"
               />
               <input
                 placeholder="이름"
@@ -457,6 +482,7 @@ class AttTable extends Component {
                   return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
                 })}
             </select>
+            <button onClick={() =>{this.DayReset()}}>날짜 초기화</button>
               <table class="b" width="100%" >
               <thead>
                 
