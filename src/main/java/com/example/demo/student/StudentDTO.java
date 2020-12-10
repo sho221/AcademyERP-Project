@@ -11,10 +11,7 @@ import lombok.*;
     @Setter
     @Data
 public class StudentDTO implements Serializable {
-    /**
-    	 *
-    	 */
-        
+    
     private static final long serialVersionUID = 1L;
 
     @Id

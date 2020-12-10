@@ -58,10 +58,11 @@ class Ins_stu extends Component {
     })
   }
 
+
   saveStudent = (e) => {
     e.preventDefault();
 
-    console.log(this.state.curri)
+    console.log(this.state.email)
 
     let student = {
       name : this.state.name,
@@ -73,6 +74,7 @@ class Ins_stu extends Component {
       gender : this.state.gender,
     }
 
+    console.log(this.state.curri)
     ApiService.addStudent(student)
     .then( res => {
       this.setState({
@@ -86,6 +88,7 @@ class Ins_stu extends Component {
     });
 
   }
+
   render() {
     return (
       <CRow>
