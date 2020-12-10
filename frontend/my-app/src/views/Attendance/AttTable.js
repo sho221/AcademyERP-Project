@@ -50,7 +50,6 @@ class AttTable extends Component {
     var start=Moment(value).add(getDay*-1,'days').format("YYYY-MM-DD")
     var end=Moment(start).add(6,'days').format("YYYY-MM-DD")
     this.setState({
-      day: value,
       start: start,
       end: end
     })
@@ -224,7 +223,6 @@ class AttTable extends Component {
     var start=Moment(day).add(getDay*-1,'days').format("YYYY-MM-DD")
     var end=Moment(start).add(6,'days').format("YYYY-MM-DD")
     this.setState({
-      day: day,
       start: start,
       end: end
     })

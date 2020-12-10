@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import {CButton,CCard,CCardBody, CCardFooter,CCardHeader,CCol,CForm,CFormGroup,CRow,CSelect,CLabel,CInput} from '@coreui/react'
+import {CButton,CCard,CCardBody, CCardFooter,CCardHeader,CCol,CFormGroup,CRow,CSelect,CLabel} from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import axios from "axios";
 import moment from "moment"
 
-var first=1;
+
 class AttUpdate extends Component{
   constructor(props) {
     super(props)
@@ -28,7 +28,7 @@ class AttUpdate extends Component{
   }
   componentDidMount(){
     const { params } = this.props.match;
-    axios.get("http://localhost:8083/api/Attget?no="+params.no).then(res => {
+    axios.get("http://localhost:8083/Attget?no="+params.no).then(res => {
       console.log(res);
       this.setState({
         attList: res.data.list
@@ -116,8 +116,18 @@ class AttUpdate extends Component{
       tag[i].value=list[i]
     }
   }
+  delete(){
+    axios.delete(`http://localhost:8083/Attupdate/`+this.state.no)
+      .then(
+        alert("삭제"),
+        document.location.href = "#/Attendance"
+      )
+      .catch(function (error){
+        console.log(error)
+      })
+  }
   handleFormSubmit() {
-    axios.post(`http://localhost:8083/api/Attupdate/`+this.state.no,{
+    axios.put(`http://localhost:8083/Attupdate/`+this.state.no,{
       no: this.state.no,
       employee_no: Number(this.state.employee_no),
       day: this.state.year+"-"+this.state.month+"-"+this.state.day,
@@ -126,10 +136,6 @@ class AttUpdate extends Component{
       night: this.state.night  
     })
       .then(
-        console.log("ASD"+this.state.employee_no),
-        console.log("ASD"+this.state.SH+":"+this.state.SM+":"+this.state.SS),
-        console.log("ASD"+this.state.EH+":"+this.state.EM+":"+this.state.ES),
-
         alert("수정"),
         document.location.href = "#/Attendance"
       )
@@ -146,6 +152,13 @@ class AttUpdate extends Component{
     const { attList } = this.state;
     const yyyy=moment(attList.day).format("YYYY");
     const mm=moment(attList.day).format("MM");
+    const dd=moment(attList.day).format("DD");
+    const S_hh=moment("2020-11-11 "+attList.start_time).format("HH");
+    const S_mi=moment("2020-11-11 "+attList.start_time).format("mm");
+    const S_ss=moment("2020-11-11 "+attList.start_time).format("ss");
+    const E_hh=moment("2020-11-11 "+attList.end_time).format("HH");
+    const E_mi=moment("2020-11-11 "+attList.end_time).format("mm");
+    const E_ss=moment("2020-11-11 "+attList.end_time).format("ss");
     const MAX_day=this.getMAX_day(yyyy,mm);
     const years=this.makeYears(yyyy);
     const days=this.makeDays(MAX_day);
@@ -157,7 +170,7 @@ class AttUpdate extends Component{
     return (
       <CCard>
         <CCardHeader>
-          Number : {attList.no}///{mins[1]}
+          Number : {attList.no}
           <small> employee : {attList.employee_no}</small>  
 
           
@@ -169,7 +182,8 @@ class AttUpdate extends Component{
                   <CLabel htmlFor="ccyear">Year</CLabel>
                   <CSelect custom name="year" id="ccyear" className="re" onChange={this.handleValueChange}>
                     {years.map((yeardata)=>{
-                      return( <option value={yeardata}>{yeardata}</option>);
+                      if(yeardata===Number(yyyy)){return( <option selected="selected" value={yeardata}>{yeardata}</option> )}
+                      else{return( <option value={yeardata}>{yeardata}</option> )}
                     })}
                   </CSelect>
                 </CFormGroup>
@@ -179,7 +193,8 @@ class AttUpdate extends Component{
                   <CLabel htmlFor="ccmonth">Month</CLabel>
                   <CSelect custom name="month" id="ccmonth" className="re" onChange={this.handleValueChange}> 
                     {months.map((monthdata)=>{
-                      return( <option value={monthdata}>{monthdata}</option> );
+                      if(monthdata===Number(mm)){return( <option selected="selected" value={monthdata}>{monthdata}</option> );}
+                      else{return( <option value={monthdata}>{monthdata}</option> );}
                     })}
                   </CSelect>
                 </CFormGroup>
@@ -189,7 +204,8 @@ class AttUpdate extends Component{
                   <CLabel htmlFor="ccmonth">Day</CLabel>
                   <CSelect custom name="day" id="ccmonth" className="re" onChange={this.handleValueChange}>
                     {days.map((daydata)=>{
-                      return(<option value={daydata}>{daydata}</option>)
+                      if(daydata===Number(dd)) return(<option selected="selected" value={daydata}>{daydata}</option>);
+                      else return(<option value={daydata}>{daydata}</option>)
                     })}
                   </CSelect>
                 </CFormGroup>
@@ -202,8 +218,10 @@ class AttUpdate extends Component{
               <CCol xs="12" md="3">
                 <CSelect custom name="SH" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {times.map((daydata)=>{
+                    var temp=S_hh
                     if(daydata<10) daydata="0"+daydata;
-                    return(<option value={daydata}>{daydata}</option>)
+                    if(Number(daydata)===Number(temp)) return(<option selected="selected" value={daydata}>{daydata}</option>);
+                    else return(<option value={daydata}>{daydata}</option>)
                   })}
                 </CSelect>
               </CCol>
@@ -211,7 +229,8 @@ class AttUpdate extends Component{
                 <CSelect custom name="SM" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {mins.map((daydata)=>{
                     if(daydata<10) daydata="0"+daydata;
-                    return(<option value={daydata}>{daydata}</option>)
+                    if(Number(daydata)===this.OneToTwo(Number(S_mi))) return(<option selected="selected" value={daydata}>{daydata}</option>);
+                    else return(<option value={daydata}>{daydata}</option>)
                   })}
                 </CSelect>
               </CCol>
@@ -219,7 +238,8 @@ class AttUpdate extends Component{
                 <CSelect custom name="SS" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {secs.map((daydata)=>{
                     if(daydata<10) daydata="0"+daydata;
-                    return(<option value={this.OneToTwo(daydata)}>{this.OneToTwo(daydata)}</option>)
+                    if(Number(daydata)===this.OneToTwo(Number(S_ss))) return(<option selected="selected" value={this.OneToTwo(daydata)}>{this.OneToTwo(daydata)}</option>);
+                    else return(<option value={this.OneToTwo(daydata)}>{this.OneToTwo(daydata)}</option>)
                   })}
                 </CSelect>
               </CCol>
@@ -231,7 +251,8 @@ class AttUpdate extends Component{
                 <CSelect custom name="EH" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {times.map((daydata)=>{
                     if(daydata<10) daydata="0"+daydata;
-                    return(<option value={daydata}>{daydata}</option>)
+                    if(Number(daydata)===this.OneToTwo(Number(E_hh))) return(<option selected="selected" value={daydata}>{daydata}</option>);
+                    else return(<option value={daydata}>{daydata}</option>)
                   })}
                 </CSelect>
               </CCol>
@@ -239,7 +260,8 @@ class AttUpdate extends Component{
                 <CSelect custom name="EM" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {mins.map((daydata)=>{
                     if(daydata<10) daydata="0"+daydata;
-                    return(<option value={daydata}>{daydata}</option>)
+                    if(Number(daydata)===this.OneToTwo(Number(E_mi))) return(<option selected="selected" value={daydata}>{daydata}</option>);
+                    else return(<option value={daydata}>{daydata}</option>)
                   })}
                 </CSelect>
               </CCol>
@@ -247,7 +269,8 @@ class AttUpdate extends Component{
                 <CSelect custom name="ES" id="ccmonth" className="re" onChange={this.handleValueChange}>
                   {secs.map((daydata)=>{
                     if(daydata<10) daydata="0"+daydata;
-                    return(<option value={daydata}>{daydata}</option>)
+                    if(Number(daydata)===this.OneToTwo(Number(E_ss))) return(<option selected="selected" value={daydata}>{daydata}</option>);
+                    else return(<option value={daydata}>{daydata}</option>)
                   })}
                 </CSelect>
               </CCol>
@@ -260,17 +283,20 @@ class AttUpdate extends Component{
                   {OX.map((ox) => {
                     var temp="O"
                     if(ox===0) temp="X";
-                    return(<option value={ox}>{temp}</option>);
+                    if(ox===Number(attList.night)) return(<option value={ox} selected="selected">{temp}</option>);
+                    else return(<option value={ox}>{temp}</option>);
                   })}                 
                 </CSelect>
               </CCol>
             </CFormGroup>
             <CCardFooter>
-          <CButton onClick={()=>{this.handleFormSubmit()}} size="sm" color="primary" ><CIcon name="cil-scrubber" /> Submit</CButton> <CButton size="sm" color="danger" onClick={()=>{this.reset()}}><CIcon name="cil-ban" /> Reset</CButton>
+          <CButton  size="sm" color="primary" onClick={()=>{this.handleFormSubmit()}}><CIcon name="cil-scrubber" /> Submit</CButton> 
+          <CButton size="sm" color="danger" onClick={()=>{this.reset()}}><CIcon name="cil-ban" /> Reset</CButton>
+          <CButton size="sm" color="danger" onClick={()=>{this.delete()}}><CIcon name="cil-ban" /> Delete</CButton>
         </CCardFooter>
         </CCardBody>
       </CCard>       
     )
   }
 }
-export default AttUpdate
+export default AttUpdate 
