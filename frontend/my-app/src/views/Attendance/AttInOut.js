@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
 import '../css/table.css';
+import {
+  CButton,
+  CCol,
+  CRow
+} from '@coreui/react'
 var session_no=window.sessionStorage.getItem('no');
-
+const style={width: "50%"}
 class AttInOut extends Component {
   in = () =>{
     axios.post(`http://localhost:8083/api2/in`,{no: session_no})
@@ -64,10 +69,19 @@ class AttInOut extends Component {
     
     render() {
       return (
-      <div>
-        <button onClick={this.in}>출근하기</button>
-        <button onClick={this.out}>퇴근하기</button>
-        <button onClick={this.night}>연장근무</button>
+      <div style={style}>
+        <CRow className="align-items-center">
+            <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+              <CButton block variant="outline" color="primary"onClick={this.in}>출근하기</CButton>
+            </CCol>
+            <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+              <CButton block variant="outline" color="primary" onClick={this.out}>퇴근하기</CButton>
+            </CCol>
+            <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+              <CButton block variant="outline" color="primary" onClick={this.night}>연장근무</CButton>
+            </CCol>
+        </CRow>
+        <br></br>
       </div>
     );
   }

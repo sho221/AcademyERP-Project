@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import axios from "axios";
 import {CChartLine} from '@coreui/react-chartjs';
-import {CCard,CCardBody,CCardHeader} from '@coreui/react';
+
 import '../css/table.css';
 import { Link } from 'react-router-dom';
 import Moment from "moment"
 
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CRow,CSelect,CInput
+} from '@coreui/react'
 const _numbers=[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const _color=["#F5A9BC","#58FAF4","#F3F781","#00FFBF","#82FA58"];
 const _week=[1,2,3,4,5,6,0];
@@ -357,9 +365,9 @@ class AttTable extends Component {
     var tempString='';
     var depname='';
     var cyearDATA=[];
-    
+    const style={width: "70%"}
     if(this.props.mode===_Chart){
-      years=this.makeYears(2020);
+      years=this.makeYears(new Date().getFullYear());
       if(cyear.length>0){
         cyearDATA=this.cyearsMake();
       }
@@ -372,7 +380,7 @@ class AttTable extends Component {
         this.getWeekly(this.state.day)
         this.setState({loopCheck: false})
       }
-      if(ItemList.length>=1){
+      if(ItemList.length>0){
         var num=ItemList[0].employee_no;
         for(var i=0;i<ItemList.length;i++){
           for(var l=0;l<depList.length;l++){
@@ -405,24 +413,28 @@ class AttTable extends Component {
       <div>
         {this.props.mode===_default &&
           <div>
-            <input 
-              type='date'
-              value={this.state.day}
-              onChange={this.dayChange}
-              class="day"
-            />
-            <input
-              placeholder="이름"
-              value={this.state.name}
-              onChange={this.nameChange}
-            />
-            <select onChange={this.depChange} value={this.state.dep}>
-              <option value="">부서선택</option>
-                {depList&&depList.map((itemdata, insertIndex) => {
-                  return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
-                })}
-            </select>
-            <button onClick={() =>{this.DayReset()}}>날짜 초기화</button>
+            <div style={style}>
+            <CRow className="align-items-center">
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CInput type="date" value={this.state.day} onChange={this.dayChange}  id="date-input" name="date-input" placeholder="date" />
+              </CCol>
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CInput type="email" id="email-input" onChange={this.nameChange} value={this.state.name} name="email-input" placeholder="name" autoComplete="name"/>
+              </CCol>
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CSelect custom id="ccyear" onChange={this.depChange} value={this.state.dep}>
+                  <option value="">부서선택</option>
+                    {depList&&depList.map((itemdata, insertIndex) => {
+                      return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
+                    })}
+                </CSelect>   
+              </CCol>    
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CButton block variant="outline" color="success" onClick={() =>{this.DayReset()}}>날짜 초기화</CButton>
+              </CCol>
+            </CRow>
+            <br/>
+            </div>
             <table name="ATT" class="default">
             <thead>
               <tr class="default">
@@ -476,23 +488,29 @@ class AttTable extends Component {
         }       
         {this.props.mode===_weekly &&        
           <div>
-            <input 
-              type='date'
-              value={this.state.day}
-              onChange={this.dayChange2}
-              class="day"
-            />
-            <input
-              placeholder="이름"
-              value={this.state.name}
-              onChange={this.nameChange2}
-            />
-            <select onChange={this.depChange2} value={this.state.dep}>
-              <option value="">부서선택</option>
-                {depList&&depList.map((itemdata, insertIndex) => {
-                  return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
-                })}
-            </select>
+            <div style={style}>
+            <CRow className="align-items-center">
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CInput type="date" value={this.state.day} onChange={this.dayChange2}  id="date-input" name="date-input" placeholder="date" />
+              </CCol>
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CInput type="email" id="email-input" onChange={this.nameChange2} value={this.state.name} name="email-input" placeholder="name" autoComplete="name"/>
+              </CCol>
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CSelect custom id="ccyear" onChange={this.depChange2} value={this.state.dep}>
+                  <option value="">부서선택</option>
+                    {depList&&depList.map((itemdata, insertIndex) => {
+                      return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
+                    })}
+                </CSelect>   
+              </CCol>    
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                
+              </CCol>
+            </CRow>
+            <br/>
+            </div>
+            
             <table class="b" width="100%" >
             <caption>{this.state.start}~{this.state.end}</caption>
               <thead>
@@ -537,24 +555,28 @@ class AttTable extends Component {
         }
         {this.props.mode===_monthly &&
           <div>
-              <input 
-                type='date'
-                value={this.state.day}
-                onChange={this.dayChange}
-                class="day"
-              />
-              <input
-                placeholder="이름"
-                value={this.state.name}
-                onChange={this.nameChange}
-              />
-              <select onChange={this.depChange} value={this.state.dep}>
-              <option value="">부서선택</option>
-                {depList&&depList.map((itemdata, insertIndex) => {
-                  return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
-                })}
-            </select>
-            <button onClick={() =>{this.DayReset()}}>날짜 초기화</button>
+            <div style={style}>
+            <CRow className="align-items-center">
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CInput type="date" value={this.state.day} onChange={this.dayChange}  id="date-input" name="date-input" placeholder="date" />
+              </CCol>
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CInput type="email" id="email-input" onChange={this.nameChange} value={this.state.name} name="email-input" placeholder="name" autoComplete="name"/>
+              </CCol>
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CSelect custom id="ccyear" onChange={this.depChange} value={this.state.dep}>
+                  <option value="">부서선택</option>
+                    {depList&&depList.map((itemdata, insertIndex) => {
+                      return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
+                    })}
+                </CSelect>   
+              </CCol>    
+              <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                <CButton block variant="outline" color="success" onClick={() =>{this.DayReset()}}>날짜 초기화</CButton>
+              </CCol>
+            </CRow>
+            <br/>
+            </div>
               <table class="b" width="100%" >
               <thead>
                 
@@ -617,15 +639,23 @@ class AttTable extends Component {
           <div>
               <CCard>
                 <CCardHeader>
-                    부서별 차트
-                    <select name="Cyear" onChange={this.CyearChange}>
-                      <option>연도 입력</option>
-                      {years.map((year)=>{
-                        return(
-                          <option value={year}>{year}</option>
-                        );
-                      })}
-                    </select>
+                  <div style={{width: "30%"}}>
+                  <CRow className="align-items-center">
+                    <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">
+                    부서별 차트  
+                    </CCol>
+                    <CCol col="6" sm="3" md="2" xl className="mb-3 mb-xl-0">    
+                      <CSelect custom id="ccyear" name="Cyear" onChange={this.CyearChange} width="6px">                   
+                        <option>연도 입력</option>
+                        {years.map((year)=>{
+                          return(
+                            <option value={year}>{year}</option>
+                            );
+                          })}
+                      </CSelect>
+                    </CCol>
+                  </CRow>
+                  </div>
                 </CCardHeader>
                 <CCardBody>
                 <CChartLine
