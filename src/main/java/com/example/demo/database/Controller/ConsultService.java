@@ -39,7 +39,6 @@ public class ConsultService {
 
     @PutMapping("consult/edit/{no}")
     public String update(@RequestBody ConsultEntity con, @PathVariable("no") Long no) {
-        
         ConsultEntity result =  consultRepository.save(con);
         return result.toString();
     }

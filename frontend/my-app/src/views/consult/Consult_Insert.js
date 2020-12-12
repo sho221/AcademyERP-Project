@@ -1,118 +1,154 @@
 import React, { Component } from "react";
-import {
-    CButton,
-    CCard,
-    CCardBody,
-    CCardFooter,
-    CCol,
-    CForm,
-    CFormGroup,
-    CTextarea,
-    CInput,
-    CInputRadio,
-    CLabel
-} from '@coreui/react'
 import axios from "axios";
+import '../users/table.css';
+class Consult_Insert extends Component{
 
-class Consult_Insert extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      hp1: '',
+      hp2: '',
+      hp3: '',
+      schedule: '',
+      memo: ''
+    }
 
-    constructor(props) {
-        super(props)
-        this.state = { 
-            ItemList: ""
-        }
-      }
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.handleValueChange = this.handleValueChange.bind(this)
+    this.insertConsult = this.insertConsult.bind(this)
+    this.handleClickOpen = this.handleClickOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this);
+
+}
+
+handleFormSubmit(e) {
+  e.preventDefault()
+  this.insertConsult()
+  this.setState({
+    name: '',
+    hp1: '',
+    hp2: '',
+    hp3: '',
+    schedule: '',
+    memo: ''
+  })
+  alert("등록되었습니다.");
+  this.props.history.push('/consult/Consult_Call');
+}
+
+handleValueChange(e) {
+  let nextState = {};
+  nextState[e.target.name] = e.target.value;
+  this.setState(nextState);
+}
+
+insertConsult() {
+  axios({
+    url: 'http://localhost:8080/api/Consult_Call',
+    method: "POST",
+    headers: {'content-type': 'application/json'},
+    data: {
+      name: this.state.name,
+      hp1: this.state.hp1,
+      hp2: this.state.hp2,
+      hp3: this.state.hp3,
+      schedule: this.state.schedule,
+      memo: this.state.memo
+    }
+  })
+    .then(function (response){
+      console.log(response)
+    })
+    .catch(function (error){
+      console.log(error)
+    })
+}
+
+handleClickOpen() {
+  this.setState({
+    open: true
+  });
+}
+
+handleClose() {
+
+  this.setState({
+    name: '',
+    hp1: '',
+    hp2: '',
+    hp3: '',
+    schedule: '',
+    memo: '',
+    open: false
+  })
+}
+
+// class Consult_Insert extends Component {
+
+//     constructor(props) {
+//         super(props)
+//         this.state = { 
+//             ItemList: ""
+//         }
+//       }
     
-      componentDidMount() {
-          this.getApi();
-      }
-    
-      getApi = () => {
-          axios.get("http://localhost:8080/api/Consult_Insert")
-              .then(res => {
-                  console.log(res);
-                  this.setState({
-                    ItemList: res.data.message
-                  })
-              })
-              .catch(res => console.log(res))
-      }
+//       componentDidMount() {
+//           this.getApi();
+//       }
+      
+//       getApi = () => {
+//           axios.get("http://localhost:8080/api/Consult_Insert")
+//               .then(res => {
+//                   console.log(res);
+//                   this.setState({
+//                     ItemList: res.data.message
+//                   })
+//               })
+//               .catch(res => console.log(res))
+//       }
 
+// render() {
+//     const { ItemList } = this.state;
+//     console.log(ItemList);
 render() {
-    const { ItemList } = this.state;
-    console.log(ItemList);
     return (
-        <CCol xs="12" md="6">
-          {/* <CForm name="f" method="post" onsubmit="return check()"> */}
-        <CCard>
-          <CCardBody>
-            <CForm action="" method="post" encType="multipart/form-data" className="form-horizontal">
-              <CFormGroup row>
-                <CCol md="3">
-                  <CLabel htmlFor="text-input">성명</CLabel>
-                </CCol>
-                <CCol xs="12" md="9">
-                  <CInput id="text-input" name="text-input"/>
-                  {/* <CFormText>This is a help text</CFormText> */}
-                </CCol>
-              </CFormGroup>
-              <CFormGroup row>
-                <CCol md="3">
-                  <CLabel htmlFor="text-input">전화번호</CLabel>
-                </CCol>
-                <CCol xs="12" md="9">
-                  <CInput id="text-input" name="text-input" />-
-                  <CInput id="text-input" name="text-input" />-
-                  <CInput id="text-input" name="text-input" />
-                  {/* <CFormText>This is a help text</CFormText> */}
-                </CCol>
-              </CFormGroup>
-              <CFormGroup row>
-                <CCol md="3">
-                  <CLabel htmlFor="date-input">상담날짜</CLabel>
-                </CCol>
-                <CCol xs="12" md="9">
-                  <CInput type="date" id="date-input" name="date-input" placeholder="date" />
-                </CCol>
-              </CFormGroup>
-              <CFormGroup row>
-                <CCol md="3">
-                  <CLabel htmlFor="textarea-input">메모</CLabel>
-                </CCol>
-                <CCol xs="12" md="9">
-                  <CTextarea 
-                    name="textarea-input" 
-                    id="textarea-input" 
-                    rows="9"
-                    placeholder="Content..."/>
-                </CCol>
-              </CFormGroup>
-              <CFormGroup row>
-                <CCol md="3">
-                  <CLabel>상담</CLabel>
-                </CCol>
-                <CCol md="9">
-                  <CFormGroup variant="custom-radio" inline>
-                    <CInputRadio custom id="inline-radio1" name="inline-radios" value="option1" />
-                    <CLabel variant="custom-checkbox" htmlFor="inline-radio1">전화상담</CLabel>
-                  </CFormGroup>
-                  <CFormGroup variant="custom-radio" inline>
-                    <CInputRadio custom id="inline-radio2" name="inline-radios" value="option2" />
-                    <CLabel variant="custom-checkbox" htmlFor="inline-radio2">온라인상담</CLabel>
-                  </CFormGroup>
-                </CCol>
-              </CFormGroup>
-            </CForm>
-          </CCardBody>
-          <CCardFooter>
-            <CButton type="submit" size="sm" color="primary">저장</CButton>
-            <CButton type="reset" size="sm" color="danger">취소</CButton>
-          </CCardFooter>
-        </CCard>
-        {/* </CForm> */}
-        </CCol>
+      <div>
+        <table>
+              {/* <tr>
+                <td>작성자</td>
+                <td>{ItemList.id}</td>
+              </tr>    */}
+              <tr>
+                <td>성명</td>
+                <td><input type="text" name="name"/></td>
+              </tr>
+              <tr>
+                <td>전화번호</td>
+                <td>
+                  <input type="text" name="hp1" size="4"/>-
+                  <input type="text" name="hp2" size="4"/>-
+                  <input type="text" name="hp3" size="4"/>
+                </td>
+              </tr>
+              <tr>
+                <td>상담날짜</td>
+                <td><input type="date" name="schedule" placeholder="date"/></td>
+              </tr>
+              <tr>
+                <td>메모</td>
+                <td>
+                  <textarea name="memo" rows="6" cols="50"/>
+                </td>
+              </tr>
+              <tr>
+                <button onClick={this.handleFormSubmit}>저장</button>
+              </tr>
+          </table>
+        </div>
   );
 }
 }
+
 
 export default Consult_Insert;
