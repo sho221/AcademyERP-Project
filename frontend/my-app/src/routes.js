@@ -38,6 +38,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 const Students = React.lazy(() => import('./views/Student/Students'));
+const Student = React.lazy(() => import('./views/Student/Student'));
 const Ins_stu = React.lazy(() => import('./views/Student/Ins_stu'));
 
 const routes = [
@@ -82,6 +83,7 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/students', exact: true,  name: 'Students', component: Students },
+  { path: '/student', exact: true,  name: 'Students', component: Student },
   { path: '/ins_stu', exact: true,  name: 'Ins_stu', component: Ins_stu },
 
 ];

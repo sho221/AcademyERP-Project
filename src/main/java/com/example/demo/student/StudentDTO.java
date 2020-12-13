@@ -17,21 +17,21 @@ public class StudentDTO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int no;
+    private Long no;
     private String name;
     private String hp;
-    private String eamil;
+    private String email;
     private String birth;
     private String address;
     private String curri;
     private String gender;
     private String regdate;
 
-    public int getNo() {
+    public Long getNo() {
         return this.no;
     }
 
-    public void setNo(int no) {
+    public void setNo(Long no) {
         this.no = no;
     }
 
@@ -51,12 +51,12 @@ public class StudentDTO implements Serializable {
         this.hp = hp;
     }
 
-    public String getEamil() {
-        return this.eamil;
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setEamil(String eamil) {
-        this.eamil = eamil;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getBirth() {

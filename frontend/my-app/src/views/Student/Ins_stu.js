@@ -73,10 +73,10 @@ class Ins_stu extends Component {
       address : this.state.address,
       curri : this.state.curri,
       gender : this.state.gender,
-      regdate : this.state.regdate
+      //regdate : this.state.regdate
     }
 
-    console.log(this.state.curri)
+    console.log(this.state.email)
 
     ApiService.addStudent(student)
     .then( res => {

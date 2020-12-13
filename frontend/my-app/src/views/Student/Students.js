@@ -1,7 +1,15 @@
 import React,{ Component } from "react";
-import axios from "axios";
 import './table.css';
 import { Link } from 'react-router-dom';
+import ApiService from "../../ApiService";
+import {
+    CButton,
+    CCard,
+    CCardBody,
+    CCardHeader,
+    CCol,
+    CRow
+  } from '@coreui/react'
 
 class Students extends Component {
 
@@ -17,7 +25,7 @@ class Students extends Component {
     }
 
     getApi = () => {
-        axios.get("http://localhost:8080/api/students")
+        ApiService.Students()
             .then(res => {
                 console.log(res);
                 this.setState({
@@ -25,6 +33,12 @@ class Students extends Component {
                 })
             })
             .catch(res => console.log(res))
+    }
+
+    selStu = (NO) => {
+        console.log(NO)
+        window.localStorage.setItem("StudentNO", NO);
+        this.props.history.push('/student');
     }
 
     render() {
@@ -35,7 +49,7 @@ class Students extends Component {
             <table>
             
             <tr><td>no</td><td>name</td><td>hp</td><td>email</td><td>birth</td><td>address</td><td>curri</td>
-            <td>gender</td><td>regdate</td></tr>
+            <td>gender</td><td>regdate</td><td></td></tr>
            
             
                 {StudentList&&StudentList.map((itemdata, insertIndex) => {
@@ -50,6 +64,7 @@ class Students extends Component {
                     <td>{itemdata.curri}</td>
                     <td>{itemdata.gender}</td>
                     <td>{itemdata.regdate}</td>
+                    <td width ="80"><CButton block color="secondary" onClick={() => this.selStu(itemdata.no)}>상세</CButton></td>
                     </tr>
                     );
                 })}
