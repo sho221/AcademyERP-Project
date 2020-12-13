@@ -16,7 +16,7 @@ import {
 } from '@coreui/react'
 const _numbers=[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const _color=["#F5A9BC","#58FAF4","#F3F781","#00FFBF","#82FA58"];
-const _week=[1,2,3,4,5,6,0];
+const _week=[0,1,2,3,4,5,6];
 const _default=0,_weekly=1,_monthly=2,_Chart=3;
 const _HRD=1;
 let HRD_login=false;
@@ -57,7 +57,7 @@ class AttTable extends Component {
     this.getApi();
   }
   DayToSETime(value){
-    var getDay=this.dateDay(value)-1
+    var getDay=this.dateDay(value)
     var start=Moment(value).add(getDay*-1,'days').format("YYYY-MM-DD")
     var end=Moment(start).add(6,'days').format("YYYY-MM-DD")
     this.setState({
@@ -516,13 +516,13 @@ class AttTable extends Component {
               <thead>
                 <tr>
                   <th width="10%" class="a"></th>
-                  <th class="default">{Moment(this.state.start).add(0,'days').format("MM-DD")}     [월]</th>
-                  <th class="default">{Moment(this.state.start).add(1,'days').format("MM-DD")}     [화]</th>
-                  <th class="default">{Moment(this.state.start).add(2,'days').format("MM-DD")}     [수]</th>
-                  <th class="default">{Moment(this.state.start).add(3,'days').format("MM-DD")}     [목]</th>
-                  <th class="default">{Moment(this.state.start).add(4,'days').format("MM-DD")}     [금]</th>
-                  <th class="default">{Moment(this.state.start).add(5,'days').format("MM-DD")}     [토]</th>
-                  <th class="default">{Moment(this.state.start).add(6,'days').format("MM-DD")}     [일]</th>
+                  <th class="default">{Moment(this.state.start).add(0,'days').format("MM-DD")}     [일]</th>
+                  <th class="default">{Moment(this.state.start).add(1,'days').format("MM-DD")}     [월]</th>
+                  <th class="default">{Moment(this.state.start).add(2,'days').format("MM-DD")}     [화]</th>
+                  <th class="default">{Moment(this.state.start).add(3,'days').format("MM-DD")}     [수]</th>
+                  <th class="default">{Moment(this.state.start).add(4,'days').format("MM-DD")}     [목]</th>
+                  <th class="default">{Moment(this.state.start).add(5,'days').format("MM-DD")}     [금]</th>
+                  <th class="default">{Moment(this.state.start).add(6,'days').format("MM-DD")}     [토]</th>
                 </tr>
               </thead>
               <tbody>
