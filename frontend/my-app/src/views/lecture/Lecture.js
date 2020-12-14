@@ -107,9 +107,11 @@ goBack = () => {
     return (
       <div>
           <Button color="primary" onClick={this.handleClickOpen}>{ItemList.name}</Button>
-        <Dialog onClose={this.handleClose} aria-labelledby="customized-dialog-title" open={this.state.open}>
+        <Dialog onClose={this.handleClose} aria-labelledby="customized-dialog-title" open={this.state.open}
+                fullWidth={true}
+                maxWidth = {'xs'}>
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-          User name: {ItemList.name}</DialogTitle>
+          {ItemList.name}</DialogTitle>
           <DialogContent dividers>
             <table className="table table-striped table-hover">
               <tbody>

@@ -1,11 +1,12 @@
 import React from 'react'
 import axios from 'axios';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles} from "@material-ui/core";
-
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles,} from "@material-ui/core";
+import {CSelect} from '@coreui/react'
 const styles = theme => ({
     hidden: {
     display: 'none'
   }
+
 });
 
 class LectureAdd extends React.Component {
@@ -33,7 +34,7 @@ class LectureAdd extends React.Component {
     this.addLecture = this.addLecture.bind(this)
     this.handleClickOpen = this.handleClickOpen.bind(this)
     this.handleClose = this.handleClose.bind(this);
-
+    this.branchSelect = this.branchSelect.bind(this);
   }
 
 
@@ -117,7 +118,22 @@ class LectureAdd extends React.Component {
     })
   }
 
-
+/*  branchSelect = (e) => {        //dep변경
+    this.setState({
+      branch: e.target.value
+    })
+    axios({
+      method:'get',
+      url:encodeURI('http://localhost:8080/api2/),
+      responseType:'stream',
+      responseEncoding: 'UTF-8',
+    }).then(res => {
+      console.log(res);
+      this.setState({
+        ItemList: res.data.list
+      })
+    }).catch(res => console.log(res))
+  }*/
 
   render() {
     return (
@@ -125,9 +141,17 @@ class LectureAdd extends React.Component {
         <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
           추가하기
         </Button>
-        <Dialog open={this.state.open} onClose={this.handleClose}>
+        <Dialog open={this.state.open} onClose={this.handleClose} >
           <DialogTitle>클래스 추가</DialogTitle>
           <DialogContent>
+            <TextField label="지점" type="text" name="branch" value={this.state.branch} onChange={this.handleValueChange}/><br/>
+          {/*  <CSelect custom id="branch" onChange={this.branchSelect} value={this.state.branch}>
+              <option value="">지점</option>
+              {branchList&&branchList.map((itemdata, insertIndex) => {
+                return(<option value={itemdata.no} >{insertIndex+1}.{itemdata.name}</option>);
+              })}
+            </CSelect><br/>*/}
+            <TextField label="부서" type="text" name="part" value={this.state.part} onChange={this.handleValueChange}/><br/>
             <TextField label="강의명" type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
             <TextField label="강사" type="text" name="teacher" value={this.state.teacher} onChange={this.handleValueChange}/><br/>
             <TextField label="가격" type="text" name="price" value={this.state.price} onChange={this.handleValueChange}/><br/>
@@ -143,8 +167,6 @@ class LectureAdd extends React.Component {
                                onChange={this.handleValueChange}/> <span>&nbsp;&nbsp;~&nbsp;&nbsp;</span>
             <TextField title="종료시간" type="time" name="end_time" value={this.state.end_time}
                              onChange={this.handleValueChange}/><br/>
-            <TextField label="부서" type="text" name="part" value={this.state.part} onChange={this.handleValueChange}/><br/>
-            <TextField label="지점" type="text" name="branch" value={this.state.branch} onChange={this.handleValueChange}/><br/>
           </DialogContent>
 
           <DialogActions>

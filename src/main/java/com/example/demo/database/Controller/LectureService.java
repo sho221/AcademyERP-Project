@@ -1,6 +1,7 @@
 package com.example.demo.database.Controller;
 
 import com.example.demo.database.DTO.LectureEntity;
+import com.example.demo.database.Repository.LectureMapper;
 import com.example.demo.database.Repository.LectureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import java.util.Optional;
 @Service
 @CrossOrigin("*")
 public class LectureService {
+    @Autowired
+    private LectureMapper lectureMapper;
 
     @Autowired
     private LectureRepository lectureRepository;
@@ -56,4 +59,11 @@ public class LectureService {
         return result.toString();
     }
 
+  /*  @GetMapping("/branch")
+    public Map<String,List<>> getBranch(){
+        HashMap<String,List<>> result =new HashMap<>();
+        HashMap<String,Object> to= new HashMap<>();
+
+        return result;
+    }*/
 }
