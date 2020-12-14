@@ -18,7 +18,11 @@ class ApiService {
     }
 
     deleteStudent(no) {
-        return axios.delete(USER_API_BASE_URL + '/' + no)
+        return axios.delete(USER_API_BASE_URL + '/' + no);
+    }
+
+    editStudent(student) {
+        return axios.post(USER_API_BASE_URL + '/edit_stu/' + student.no, student);
     }
 
 }

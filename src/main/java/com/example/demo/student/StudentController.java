@@ -55,7 +55,12 @@ public class StudentController {
 
     @DeleteMapping("/{no}")
     public void deleteStudent(@PathVariable Long no) {
-        System.out.println("??????????????" + no);
         studentRepository.deleteById(no);
+    }
+
+    @PostMapping("/edit_stu/{no}")
+    public void editStudent(@RequestBody StudentDTO student,@PathVariable Long no) {
+        System.out.println(student.getHp());
+        studentRepository.update(student);
     }
 }

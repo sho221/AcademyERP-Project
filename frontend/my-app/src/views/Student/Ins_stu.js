@@ -157,6 +157,7 @@ class Ins_stu extends Component {
                       <option value="PYTHON">PYTHON</option>
                       <option value="C++">C++</option>
                       <option value="KOTLIN">KOTLIN</option>
+                      <option value="">수강과목 없음</option>
                     </CSelect>
                   </CCol>
                 </CFormGroup>
@@ -166,7 +167,7 @@ class Ins_stu extends Component {
                   </CCol>
                   <CCol xs="12" md="9">
                     <CSelect custom name="gender" onChange={this.onChange}>
-                    <option value="0">과목을 선택하세요</option>
+                    <option value="0">성별을 선택하세요</option>
                       <option value="male">male</option>
                       <option value="female">female</option>
                     </CSelect>

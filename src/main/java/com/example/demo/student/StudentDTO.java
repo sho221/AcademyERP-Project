@@ -3,9 +3,13 @@ package com.example.demo.student;
 import java.io.Serializable;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.DynamicUpdate;
+
 import lombok.*;
 
     @Entity
+    //@DynamicUpdate
     @Table(name = "student")
     @Getter
     @Setter

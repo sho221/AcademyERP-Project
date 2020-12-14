@@ -1,6 +1,6 @@
 import React,{ Component } from "react";
 import './table.css';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import ApiService from "../../ApiService";
 
 import {
@@ -74,7 +74,6 @@ class Student extends Component {
                         gender : stu.gender,
                         regdate : stu.regdate
                     })
-                    console.log(this.name)
                 })
             .catch(err =>{
                 console.log('getApi() 에러', err);
@@ -93,6 +92,11 @@ class Student extends Component {
         .catch(err => {
             console.log('delStu() Error!', err);
         })
+    }
+
+    editStu = (NO) => {
+        window.localStorage.setItem("StudentNO", NO);
+        this.props.history.push('/edit_stu');
     }
 
     render() {
