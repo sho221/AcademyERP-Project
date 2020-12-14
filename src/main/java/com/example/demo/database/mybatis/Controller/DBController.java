@@ -1,4 +1,4 @@
-package com.example.demo.database.mybatis;
+package com.example.demo.database.mybatis.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
+
+import com.example.demo.database.mybatis.DTO.*;
+import com.example.demo.database.mybatis.Repository.*;
 
 @RestController
 @RequestMapping("/api2")

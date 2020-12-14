@@ -1,8 +1,8 @@
-package com.example.demo.database.mybatis;
+package com.example.demo.database.mybatis.Repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-
+import com.example.demo.database.mybatis.DTO.*;
 import java.util.*;
 
 @Mapper

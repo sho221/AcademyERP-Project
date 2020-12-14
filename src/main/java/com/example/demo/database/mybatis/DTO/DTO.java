@@ -1,4 +1,4 @@
-package com.example.demo.database.mybatis;
+package com.example.demo.database.mybatis.DTO;
 
 public class DTO {
     private int no;
